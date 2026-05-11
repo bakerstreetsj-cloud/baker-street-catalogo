@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo · Baker Street</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=EB+Garamond:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --amarillo: #FCB300;
+      --negro: #0d0d0d;
+      --negro-card: #1a1a1a;
+      --borde: rgba(252, 179, 0, 0.15);
+      --borde-hover: rgba(252, 179, 0, 0.45);
+      --texto: #f0ead6;
+      --texto-suave: rgba(240, 234, 214, 0.55);
+      --texto-tenue: rgba(240, 234, 214, 0.3);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--negro);
+      color: var(--texto);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--negro);
+      border-bottom: 0.5px solid var(--borde);
+      padding: 1.4rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    header img.logo {
+      height: 52px;
+      width: auto;
+    }
+
+    .header-text h1 {
+      font-family: 'Pirata One', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--amarillo);
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+
+    .header-text p {
+      font-size: 11px;
+      color: var(--texto-suave);
+      font-weight: 300;
+      margin-top: 3px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* ── BANNER ── */
+    .banner {
+      width: 100%;
+      height: 320px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      opacity: 0.85;
+    }
+
+    .banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(13,13,13,0.1) 0%, rgba(13,13,13,0.7) 100%);
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    /* ── BÚSQUEDA ── */
+    .bs-search-wrap {
+      position: relative;
+      margin-bottom: 1.2rem;
+    }
+
+    .bs-search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      stroke: var(--texto-suave);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      pointer-events: none;
+    }
+
+    #bs-search {
+      width: 100%;
+      padding: 11px 16px 11px 40px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      border: 0.5px solid var(--borde);
+      border-radius: 6px;
+      background: var(--negro-card);
+      color: var(--texto);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    #bs-search::placeholder { color: var(--texto-tenue); }
+    #bs-search:focus { border-color: rgba(252,179,0,0.5); }
+
+    /* ── FILTROS ── */
+    .bs-filters-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 1.6rem;
+    }
+
+    .bs-filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bs-filter-group label {
+      font-size: 10px;
+      color: var(--texto-tenue);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 400;
+    }
+
+    .bs-select {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      border: 0.5px solid var(--borde);
+      border-radius: 6px;
+      background: var(--negro-card);
+      color: var(--texto);
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(240,234,214,0.3)' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 30px;
+      transition: border-color 0.2s;
+    }
+
+    .bs-select:focus { border-color: rgba(252,179,0,0.5); }
+
+    .bs-select option {
+      background: #1a1a1a;
+      color: var(--texto);
+    }
+
+    /* ── CONTADOR Y RESET ── */
+    .bs-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    #bs-count {
+      font-size: 11px;
+      color: var(--texto-tenue);
+      font-weight: 300;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    #bs-reset {
+      font-size: 11px;
+      color: var(--texto-tenue);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      padding: 0;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      transition: color 0.15s;
+      display: none;
+    }
+
+    #bs-reset:hover { color: var(--amarillo); }
+
+    /* ── LISTA ── */
+    .bs-list { border-top: 0.5px solid var(--borde); }
+
+    .bs-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      padding: 16px 0;
+      border-bottom: 0.5px solid var(--borde);
+      gap: 20px;
+    }
+
+    .bs-item-title {
+      font-family: 'EB Garamond', serif;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--texto);
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+
+    .bs-item-author {
+      font-size: 12px;
+      color: var(--texto-suave);
+      margin-bottom: 7px;
+      font-weight: 300;
+    }
+
+    .bs-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .bs-tag {
+      font-size: 9px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      border: 0.5px solid var(--borde);
+      color: var(--texto-tenue);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .bs-tag.usado {
+      border-color: rgba(252,179,0,0.3);
+      color: rgba(252,179,0,0.6);
+    }
+
+    .bs-editorial {
+      font-size: 11px;
+      color: var(--texto-tenue);
+      font-weight: 300;
+    }
+
+    .bs-item-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      padding-top: 2px;
+    }
+
+    .bs-item-price {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--amarillo);
+      white-space: nowrap;
+    }
+
+    /* ── ESTADOS ── */
+    .bs-empty, .bs-loading {
+      padding: 4rem 0;
+      text-align: center;
+      font-size: 14px;
+      color: var(--texto-tenue);
+      font-weight: 300;
+    }
+
+    .bs-loading::after {
+      content: '';
+      display: block;
+      width: 22px;
+      height: 22px;
+      border: 1.5px solid var(--borde);
+      border-top-color: var(--amarillo);
+      border-radius: 50%;
+      margin: 1rem auto 0;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .bs-error {
+      padding: 1.5rem;
+      border: 0.5px solid var(--borde);
+      border-radius: 6px;
+      background: var(--negro-card);
+      font-size: 13px;
+      color: var(--texto-suave);
+      line-height: 1.6;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 10px;
+      color: var(--texto-tenue);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-top: 0.5px solid var(--borde);
+    }
+
+    footer a { color: var(--amarillo); text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 520px) {
+      header { padding: 1rem; }
+      header img.logo { height: 40px; }
+      .header-text h1 { font-size: 22px; }
+      .banner { height: 200px; }
+      main { padding: 1.5rem 1rem 4rem; }
+      .bs-filters-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img class="logo" src="Isologotipo.png" alt="Baker Street" />
+  <div class="header-text">
+    <h1>Baker Street</h1>
+    <p>Librería · San Juan</p>
+  </div>
+</header>
+
+<div class="banner">
+  <img src="banner.png" alt="Baker Street librería" />
+  <div class="banner-overlay"></div>
+</div>
+
+<main>
+  <div class="bs-search-wrap">
+    <svg class="bs-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+    <input type="text" id="bs-search" placeholder="Buscar por título o autor..." aria-label="Buscar libros" />
+  </div>
+
+  <div class="bs-filters-row">
+    <div class="bs-filter-group">
+      <label for="filter-genero">Género</label>
+      <select class="bs-select" id="filter-genero">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <div class="bs-filter-group">
+      <label for="filter-precio">Precio</label>
+      <select class="bs-select" id="filter-precio">
+        <option value="">Cualquier precio</option>
+        <option value="5000">Hasta $5.000</option>
+        <option value="10000">Hasta $10.000</option>
+        <option value="20000">Hasta $20.000</option>
+        <option value="30000">Hasta $30.000</option>
+      </select>
+    </div>
+    <div class="bs-filter-group">
+      <label for="filter-condicion">Condición</label>
+      <select class="bs-select" id="filter-condicion">
+        <option value="">Todos</option>
+        <option value="Nuevo">Nuevo</option>
+        <option value="Usado">Usado</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="bs-meta-row">
+    <p id="bs-count"></p>
+    <button id="bs-reset">Limpiar filtros</button>
+  </div>
+
+  <div id="bs-list"><div class="bs-loading">Cargando catálogo</div></div>
+</main>
+
+<footer>Baker Street · <a href="https://www.instagram.com/bakerstreet.sj/">@bakerstreet.sj</a> · San Juan, Argentina</footer>
+
+<script>
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTciR-ezMp4lpUi2MFQC2IGWzz0vfdXXtSATjNn2WgS4CDIJzHpCuTAAszIHIIbvjSsOnEZ7bprL5kI/pub?gid=0&single=true&output=csv';
+
+let allBooks = [];
+let filters = { genero: '', precio: '', condicion: '', search: '' };
+
+function smartSplit(line) {
+  const result = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+function normalize(str) {
+  return str.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function toTitleCase(str) {
+  if (!str) return '';
+  const min = ['de','del','la','las','el','los','y','e','o','a','en','con','por','para','un','una','al'];
+  return str.toLowerCase().split(' ').map((w, i) => {
+    if (i > 0 && min.includes(w)) return w;
+    return w.charAt(0).toUpperCase() + w.slice(1);
+  }).join(' ');
+}
+
+function parsePrecio(str) {
+  if (!str) return 0;
+  return parseFloat(str.replace(/[^0-9.,]/g, '').replace('.', '').replace(',', '.')) || 0;
+}
+
+function parseCSV(text) {
+  const lines = text.split('\n').filter(l => l.trim());
+  if (lines.length < 2) return [];
+  const headers = smartSplit(lines[0]).map(h => normalize(h.replace(/^"|"$/g, '')));
+  const books = [];
+  for (let i = 1; i < lines.length; i++) {
+    const row = smartSplit(lines[i]);
+    const obj = {};
+    headers.forEach((h, idx) => { obj[h] = (row[idx] || '').trim().replace(/^"|"$/g, ''); });
+    const qty = parseInt(obj['cantidad'] || 0);
+    if (isNaN(qty) || qty < 1) continue;
+    const titulo = obj['titulo'] || '';
+    if (!titulo) continue;
+    const condicion = obj['condicion'] || obj['condición'] || 'Nuevo';
+    books.push({
+      titulo: toTitleCase(titulo),
+      autor: toTitleCase(obj['autor'] || ''),
+      genero: (obj['genero'] || obj['género'] || '').trim(),
+      precioStr: obj['precio'] || '',
+      precioNum: parsePrecio(obj['precio'] || ''),
+      editorial: toTitleCase((obj['editorial'] || '').trim()),
+      condicion: condicion.charAt(0).toUpperCase() + condicion.slice(1).toLowerCase(),
+    });
+  }
+  return books;
+}
+
+function populateGeneros(books) {
+  const select = document.getElementById('filter-genero');
+  const genres = [...new Set(books.map(b => b.genero).filter(Boolean))].sort();
+  genres.forEach(g => {
+    const opt = document.createElement('option');
+    opt.value = g;
+    opt.textContent = g;
+    select.appendChild(opt);
+  });
+}
+
+function isFiltered() {
+  return filters.genero || filters.precio || filters.condicion || filters.search;
+}
+
+function renderList() {
+  const q = filters.search.toLowerCase();
+  const maxPrecio = filters.precio ? parseInt(filters.precio) : null;
+
+  const filtered = allBooks.filter(b => {
+    if (filters.genero && b.genero !== filters.genero) return false;
+    if (maxPrecio && b.precioNum > maxPrecio) return false;
+    if (filters.condicion && b.condicion !== filters.condicion) return false;
+    if (q && !b.titulo.toLowerCase().includes(q) && !b.autor.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  const countEl = document.getElementById('bs-count');
+  const resetBtn = document.getElementById('bs-reset');
+
+  countEl.textContent = filtered.length === 1 ? '1 libro disponible' : `${filtered.length} libros disponibles`;
+  resetBtn.style.display = isFiltered() ? 'block' : 'none';
+
+  const container = document.getElementById('bs-list');
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="bs-empty">No hay libros que coincidan con los filtros.</div>';
+    return;
+  }
+
+  const list = document.createElement('div');
+  list.className = 'bs-list';
+
+  filtered.forEach(b => {
+    const item = document.createElement('div');
+    item.className = 'bs-item';
+
+    const main = document.createElement('div');
+
+    const title = document.createElement('p');
+    title.className = 'bs-item-title';
+    title.textContent = b.titulo;
+
+    const author = document.createElement('p');
+    author.className = 'bs-item-author';
+    author.textContent = b.autor;
+
+    const meta = document.createElement('div');
+    meta.className = 'bs-item-meta';
+
+    if (b.genero) {
+      const tag = document.createElement('span');
+      tag.className = 'bs-tag';
+      tag.textContent = b.genero;
+      meta.appendChild(tag);
+    }
+
+    if (b.condicion === 'Usado') {
+      const cond = document.createElement('span');
+      cond.className = 'bs-tag usado';
+      cond.textContent = 'Usado';
+      meta.appendChild(cond);
+    }
+
+    if (b.editorial) {
+      const ed = document.createElement('span');
+      ed.className = 'bs-editorial';
+      ed.textContent = b.editorial;
+      meta.appendChild(ed);
+    }
+
+    main.appendChild(title);
+    main.appendChild(author);
+    main.appendChild(meta);
+
+    const right = document.createElement('div');
+    right.className = 'bs-item-right';
+
+    const price = document.createElement('div');
+    price.className = 'bs-item-price';
+    price.textContent = b.precioStr;
+
+    right.appendChild(price);
+
+    item.appendChild(main);
+    item.appendChild(right);
+    list.appendChild(item);
+  });
+
+  container.innerHTML = '';
+  container.appendChild(list);
+}
+
+function resetFilters() {
+  filters = { genero: '', precio: '', condicion: '', search: '' };
+  document.getElementById('filter-genero').value = '';
+  document.getElementById('filter-precio').value = '';
+  document.getElementById('filter-condicion').value = '';
+  document.getElementById('bs-search').value = '';
+  renderList();
+}
+
+async function loadBooks() {
+  try {
+    const res = await fetch(CSV_URL);
+    if (!res.ok) throw new Error();
+    const text = await res.text();
+    allBooks = parseCSV(text);
+    if (allBooks.length === 0) {
+      document.getElementById('bs-list').innerHTML = '<div class="bs-error">La planilla se cargó pero no hay libros con stock disponible.</div>';
+      return;
+    }
+    populateGeneros(allBooks);
+    renderList();
+  } catch {
+    document.getElementById('bs-list').innerHTML = '<div class="bs-error">No se pudo cargar el catálogo. Verificá que la planilla esté publicada como CSV.</div>';
+  }
+}
+
+document.getElementById('bs-search').addEventListener('input', e => { filters.search = e.target.value; renderList(); });
+document.getElementById('filter-genero').addEventListener('change', e => { filters.genero = e.target.value; renderList(); });
+document.getElementById('filter-precio').addEventListener('change', e => { filters.precio = e.target.value; renderList(); });
+document.getElementById('filter-condicion').addEventListener('change', e => { filters.condicion = e.target.value; renderList(); });
+document.getElementById('bs-reset').addEventListener('click', resetFilters);
+
+loadBooks();
+</script>
+</body>
+</html>

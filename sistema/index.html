@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baker Street — Sistema de Diseño</title>
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<style>
+  /* Solo para la página de demostración */
+  .demo-section {
+    padding-block: var(--space-8);
+    border-bottom: 1px solid var(--gris-borde);
+  }
+  .demo-label {
+    font-size: var(--text-xs);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--texto-terciario);
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--gris-borde);
+  }
+  .demo-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+  }
+  .demo-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+  }
+  .color-swatch {
+    width: 100%;
+    height: 60px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--gris-borde);
+  }
+  .color-label { font-size: var(--text-xs); color: var(--texto-terciario); margin-top: var(--space-2); }
+  .type-specimen { margin-bottom: var(--space-4); }
+</style>
+</head>
+<body>
+
+<script>
+// Simular shared.js inline para la demo
+const BS = { WSP_NUMBER: '5492644000000', INSTAGRAM: 'https://instagram.com/bakerstreet.sj' };
+const LOGO_SVG = `<svg viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M62 11C50 8 37 15 32 26 27 35 30 47 37 53 29 57 24 65 22 74L19 88C18 93 23 97 28 97L72 97C77 97 82 93 81 88L78 74C76 65 71 57 63 53 70 47 73 35 68 26 63 17 74 14 62 11ZM46 55C39 52 33 45 35 37 37 28 46 22 55 23 64 24 70 32 69 41 68 48 61 55 54 55ZM38 67C40 60 47 56 55 56 63 56 70 60 72 67L74 83 26 83Z"/></svg>`;
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmt(n){return '$'+Math.round(n||0).toLocaleString('es-AR');}
+function placeholderHTML(titulo){const e=esc(titulo);return`<div class="book-card__placeholder"><div class="book-card__placeholder-logo">${LOGO_SVG.replace('currentColor','#0A0A0A')}</div><span class="book-card__placeholder-title">${e}</span></div>`;}
+
+function injectHeader(active) {
+  const nav=[{href:'#',label:'Inicio',key:'home'},{href:'#',label:'Libros a Pedido',key:'pedidos'},{href:'#',label:'Stock Inmediato',key:'stock',soon:true},{href:'#',label:'Quiénes Somos',key:'quienes',soon:true}];
+  const links=nav.map(i=>{const a=i.key===active;const s=i.soon&&!a;return`<a href="${i.href}" class="bs-nav__link${a?' bs-nav__link--active':''}${s?' bs-nav__link--disabled bs-nav__link--soon':''}">${i.label}</a>`;}).join('');
+  document.body.insertAdjacentHTML('afterbegin',`<header class="bs-header"><div class="bs-header__inner"><a class="bs-logo" href="#"><div class="bs-logo__circle">${LOGO_SVG.replace('currentColor','#0A0A0A')}</div><div class="bs-logo__text"><span class="bs-logo__name">Baker Street</span><span class="bs-logo__sub">Librería · San Juan</span></div></a><nav class="bs-nav" id="bs-nav">${links}</nav><button class="bs-nav__toggle" id="bs-nav-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button></div></header>`);
+  document.getElementById('bs-nav-toggle')?.addEventListener('click',()=>document.getElementById('bs-nav').classList.toggle('bs-nav--open'));
+}
+
+function injectFooter(){
+  document.body.insertAdjacentHTML('beforeend',`<footer class="bs-footer"><div class="bs-footer__inner"><div class="bs-footer__brand"><a class="bs-logo" href="#"><div class="bs-logo__circle" style="width:36px;height:36px">${LOGO_SVG.replace('currentColor','#0A0A0A')}</div><div class="bs-logo__text"><span class="bs-logo__name" style="font-size:15px">Baker Street</span><span class="bs-logo__sub">Librería · San Juan</span></div></a><p class="bs-footer__tagline">Libros nuevos y originales a precios accesibles.</p><p class="bs-footer__desc">Desde 2020 llevando la lectura a San Juan en ferias, eventos y ahora también a tu puerta.</p></div><div><p class="bs-footer__col-title">Catálogo</p><div class="bs-footer__links"><a class="bs-footer__link" href="#">Libros a Pedido</a><a class="bs-footer__link bs-footer__link--disabled" href="#">Stock Inmediato</a></div></div><div><p class="bs-footer__col-title">Baker Street</p><div class="bs-footer__links"><a class="bs-footer__link bs-footer__link--disabled" href="#">Quiénes Somos</a><a class="bs-footer__link bs-footer__link--disabled" href="#">Slam Reloj de Arena</a><a class="bs-footer__link" href="${BS.INSTAGRAM}" target="_blank">Instagram</a></div></div></div><div class="bs-footer__bottom"><span class="bs-footer__copy">© 2025 Baker Street · San Juan, Argentina</span><div class="bs-footer__social"><a class="bs-footer__social-link" href="${BS.INSTAGRAM}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg></a></div></div></footer>`);
+}
+
+injectHeader('home');
+</script>
+
+<!-- ── HERO ── -->
+<section class="bs-hero container section">
+  <div class="bs-hero__inner">
+    <div>
+      <p class="eyebrow" style="margin-bottom:var(--space-4)">Sistema de Diseño · Baker Street</p>
+      <h1 class="bs-hero__title">Libros<br><em>nuevos.</em><br>Precios<br><em>reales.</em></h1>
+      <p class="bs-hero__desc">Esta es la página de demostración del sistema de diseño. Muestra todos los componentes reutilizables que van a compartir todas las secciones del sitio.</p>
+    </div>
+    <div>
+      <div class="how-panel">
+        <p class="how-panel__title">Cómo funciona</p>
+        <div class="how-step">
+          <div class="how-step__num">1</div>
+          <span>Elegís tu libro en el catálogo o nos consultás por cualquier título</span>
+        </div>
+        <div class="how-step">
+          <div class="how-step__num">2</div>
+          <span>Confirmamos disponibilidad y precio. Pagás el 100% por adelantado</span>
+        </div>
+        <div class="how-step">
+          <div class="how-step__num">3</div>
+          <span>En aproximadamente 10 días el libro llega a tu puerta en San Juan</span>
+        </div>
+        <a class="btn btn--primary btn--lg" style="margin-top:var(--space-3)" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/></svg>
+          Consultanos por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+
+  <!-- PALETA DE COLORES -->
+  <div class="demo-section">
+    <p class="demo-label">Paleta de colores</p>
+    <div class="demo-grid-3">
+      <div><div class="color-swatch" style="background:var(--amarillo)"></div><p class="color-label">--amarillo · #FCB300</p></div>
+      <div><div class="color-swatch" style="background:var(--negro)"></div><p class="color-label">--negro · #0A0A0A</p></div>
+      <div><div class="color-swatch" style="background:var(--gris-oscuro)"></div><p class="color-label">--gris-oscuro · #1A1A1A</p></div>
+      <div><div class="color-swatch" style="background:var(--gris-medio)"></div><p class="color-label">--gris-medio · #242424</p></div>
+      <div><div class="color-swatch" style="background:var(--texto-primario)"></div><p class="color-label">--texto-primario · #F0EBE0</p></div>
+      <div><div class="color-swatch" style="background:var(--texto-secundario)"></div><p class="color-label">--texto-secundario · #B8A98A</p></div>
+    </div>
+  </div>
+
+  <!-- TIPOGRAFÍA -->
+  <div class="demo-section">
+    <p class="demo-label">Tipografía</p>
+    <div class="type-specimen"><h1>Playfair Display — Título H1</h1></div>
+    <div class="type-specimen"><h2>Playfair Display — Título H2</h2></div>
+    <div class="type-specimen"><h3>Playfair Display — Título H3</h3></div>
+    <div class="type-specimen"><h4>Playfair Display — Título H4</h4></div>
+    <div class="type-specimen" style="margin-top:var(--space-5)">
+      <p style="font-size:var(--text-md)">DM Sans — Cuerpo de texto principal. Libros nuevos y originales para San Juan.</p>
+      <p class="text-secundario" style="margin-top:var(--space-3)">DM Sans — Texto secundario. Pedido anticipado, entrega en 10 días.</p>
+      <p class="eyebrow" style="margin-top:var(--space-3)">Eyebrow — Etiqueta de sección</p>
+    </div>
+  </div>
+
+  <!-- BOTONES -->
+  <div class="demo-section">
+    <p class="demo-label">Botones</p>
+    <div class="demo-row">
+      <button class="btn btn--primary">Primario</button>
+      <button class="btn btn--secondary">Secundario</button>
+      <button class="btn btn--ghost">Ghost</button>
+      <button class="btn btn--primary btn--sm">Pequeño</button>
+      <button class="btn btn--primary btn--lg">Grande</button>
+      <a class="btn btn--wsp" href="#">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- TAGS -->
+  <div class="demo-section">
+    <p class="demo-label">Tags y badges</p>
+    <div class="demo-row">
+      <span class="tag tag--genre">Fantasy épico</span>
+      <span class="tag tag--genre">Autoayuda</span>
+      <span class="tag tag--genre">Literatura argentina</span>
+      <span class="tag tag--disponible">Disponible</span>
+      <span class="tag tag--pedido">Por encargue</span>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="demo-section">
+    <p class="demo-label">Cards de libros — con portada, con placeholder</p>
+    <div class="books-grid">
+
+      <!-- Card con portada real -->
+      <div class="book-card">
+        <div class="book-card__cover">
+          <img src="https://covers.openlibrary.org/b/id/8739161-M.jpg" alt="Nexus"
+               onerror="this.parentElement.innerHTML=placeholderHTML('Nexus')">
+        </div>
+        <div class="book-card__body">
+          <p class="book-card__title">Nexus</p>
+          <p class="book-card__author">Harari, Yuval Noah</p>
+          <p class="book-card__genre">No ficción / Tecnología</p>
+          <div class="book-card__footer">
+            <span class="book-card__price">$33.250</span>
+            <button class="btn btn--primary btn--icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card con placeholder (sin portada) -->
+      <div class="book-card">
+        <div class="book-card__cover">
+          <script>document.currentScript.outerHTML=placeholderHTML('Cien años de soledad')</script>
+        </div>
+        <div class="book-card__body">
+          <p class="book-card__title">Cien años de soledad</p>
+          <p class="book-card__author">García Márquez, Gabriel</p>
+          <p class="book-card__genre">Realismo mágico</p>
+          <div class="book-card__footer">
+            <span class="book-card__price">$21.750</span>
+            <button class="btn btn--primary btn--icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card con portada -->
+      <div class="book-card">
+        <div class="book-card__cover">
+          <img src="https://covers.openlibrary.org/b/id/9255566-M.jpg" alt="Hábitos atómicos"
+               onerror="this.parentElement.innerHTML=placeholderHTML('Hábitos atómicos')">
+        </div>
+        <div class="book-card__body">
+          <p class="book-card__title">Hábitos atómicos</p>
+          <p class="book-card__author">Clear, James</p>
+          <p class="book-card__genre">Productividad / Hábitos</p>
+          <div class="book-card__footer">
+            <span class="book-card__price">$25.350</span>
+            <button class="btn btn--primary btn--icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card skeleton -->
+      <div class="book-card" style="pointer-events:none">
+        <div class="book-card__cover skeleton"></div>
+        <div class="book-card__body" style="gap:var(--space-3)">
+          <div class="skeleton" style="height:14px;width:80%"></div>
+          <div class="skeleton" style="height:10px;width:55%"></div>
+          <div class="skeleton" style="height:10px;width:40%"></div>
+          <div class="book-card__footer">
+            <div class="skeleton" style="height:18px;width:70px"></div>
+            <div class="skeleton" style="width:30px;height:30px;border-radius:50%"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL DEMO -->
+  <div class="demo-section">
+    <p class="demo-label">Modal de detalle</p>
+    <button class="btn btn--secondary" onclick="demoModal()">Ver modal de ejemplo</button>
+  </div>
+
+</main>
+
+<script>
+function demoModal() {
+  // Modal inline para la demo
+  let ov = document.getElementById('demo-modal-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'demo-modal-overlay';
+    ov.className = 'bs-modal-overlay';
+    ov.innerHTML = `
+      <div class="bs-modal" role="dialog">
+        <button class="bs-modal__close" onclick="document.getElementById('demo-modal-overlay').classList.remove('bs-modal-overlay--open');document.body.style.overflow=''">×</button>
+        <div class="bs-modal__cover">
+          <img src="https://covers.openlibrary.org/b/id/8739161-M.jpg" alt="Nexus"
+               style="width:190px;object-fit:cover;min-height:260px">
+        </div>
+        <div class="bs-modal__info">
+          <span class="tag tag--genre">No ficción / Tecnología</span>
+          <h2 class="bs-modal__title">Nexus</h2>
+          <p class="bs-modal__author">Harari, Yuval Noah</p>
+          <div class="bs-modal__meta">
+            <div class="bs-modal__meta-item">
+              <span class="bs-modal__meta-label">Editorial</span>
+              <span class="bs-modal__meta-value">Debate</span>
+            </div>
+            <div class="bs-modal__meta-item">
+              <span class="bs-modal__meta-label">Páginas</span>
+              <span class="bs-modal__meta-value">480</span>
+            </div>
+          </div>
+          <div class="bs-modal__price-block">
+            <span class="bs-modal__price-label">Precio Baker Street</span>
+            <span class="bs-modal__price">$33.250</span>
+          </div>
+          <p class="bs-modal__desc">Una exploración profunda de cómo las redes de información han moldeado la historia humana, desde el lenguaje hasta la inteligencia artificial, y qué significa esto para nuestro futuro colectivo.</p>
+          <div class="bs-modal__actions">
+            <a class="btn btn--wsp btn--lg" href="https://wa.me/5492644000000?text=Quiero%20encargar%20Nexus" target="_blank">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/></svg>
+              Encargar este libro
+            </a>
+            <button class="btn btn--secondary" onclick="document.getElementById('demo-modal-overlay').classList.remove('bs-modal-overlay--open');document.body.style.overflow=''">Cerrar</button>
+          </div>
+        </div>
+      </div>`;
+    ov.addEventListener('click', e => {
+      if (e.target === ov) { ov.classList.remove('bs-modal-overlay--open'); document.body.style.overflow=''; }
+    });
+    document.body.appendChild(ov);
+  }
+  ov.classList.add('bs-modal-overlay--open');
+  document.body.style.overflow = 'hidden';
+}
+
+// Placeholder para cards sin portada
+document.querySelectorAll('.book-card__cover').forEach(el => {
+  if (!el.querySelector('img') && !el.querySelector('.book-card__placeholder')) {
+    el.innerHTML = placeholderHTML(el.closest('.book-card')?.querySelector('.book-card__title')?.textContent || '');
+  }
+});
+
+injectFooter();
+</script>
+
+</body>
+</html>

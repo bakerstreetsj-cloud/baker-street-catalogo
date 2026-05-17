@@ -492,7 +492,11 @@ select:focus { border-color: var(--amarillo); }
 .modal-desc::-webkit-scrollbar { width: 4px; }
 .modal-desc::-webkit-scrollbar-track { background: transparent; }
 .modal-desc::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
-.modal-loading { color: #555; font-size: 13px; font-style: italic; }
+.modal-loading {
+  color: #555;
+  font-size: 13px;
+  font-style: italic;
+}
 .modal-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: auto; }
 .btn-wsp {
   flex: 1;
@@ -568,6 +572,58 @@ footer a:hover { text-decoration: underline; }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--negro); }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+/* ── BOTÓN FLOTANTE WHATSAPP ───────────────────── */
+.wsp-float {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #1a1a1a;
+  border: 1px solid #2e2e2e;
+  border-radius: 50px;
+  padding: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,.5);
+  transition: padding .25s ease, gap .25s ease, border-color .25s ease, box-shadow .25s ease;
+  overflow: hidden;
+  max-width: 52px;
+}
+.wsp-float:hover {
+  padding: 12px 18px 12px 14px;
+  gap: 8px;
+  border-color: #3a3a2a;
+  box-shadow: 0 6px 28px rgba(252,179,0,.15);
+  max-width: 180px;
+}
+.wsp-float-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  color: var(--amarillo);
+  transition: transform .2s;
+}
+.wsp-float:hover .wsp-float-icon {
+  transform: scale(1.08);
+}
+.wsp-float-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--texto-claro);
+  white-space: nowrap;
+  opacity: 0;
+  width: 0;
+  transition: opacity .2s ease .05s, width .25s ease;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+}
+.wsp-float:hover .wsp-float-label {
+  opacity: 1;
+  width: auto;
+}
 </style>
 </head>
 <body>
@@ -627,7 +683,8 @@ footer a:hover { text-decoration: underline; }
       <input type="text" id="search" placeholder="Buscar título o autor…" autocomplete="off">
     </div>
     <select id="filter-genre">
-      <option value="">Todos los géneros</option>
+      <!-- FIX 5: opción default cambiada a "Género" -->
+      <option value="">Género</option>
     </select>
     <select id="filter-price">
       <option value="">Cualquier precio</option>
@@ -659,6 +716,18 @@ footer a:hover { text-decoration: underline; }
   </div>
 </div>
 
+<!-- ── BOTÓN FLOTANTE WHATSAPP ── -->
+<a class="wsp-float"
+   href="https://wa.me/5492644000000?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20sobre%20un%20libro"
+   target="_blank"
+   aria-label="Consultar por WhatsApp">
+  <svg class="wsp-float-icon" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/>
+  </svg>
+  <span class="wsp-float-label">Consultar</span>
+</a>
+
 <!-- ── FOOTER ── -->
 <footer>
   <strong style="color:#c8b98a">Baker Street</strong> · Librería independiente · San Juan, Argentina<br>
@@ -667,45 +736,54 @@ footer a:hover { text-decoration: underline; }
 </footer>
 
 <script>
-// ─────────────────────────────────────────────
-// CONFIGURACIÓN — editá solo esto
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIGURACIÓN
+// ─────────────────────────────────────────────────────────────────────────────
 const SHEET_ID   = '12eSHieApU3pcMDWwrhEw_KUAIynZwCX9puaol2bGHRo';
-const SHEET_NAME = 'Hoja 1'; // nombre exacto de la pestaña
+const SHEET_NAME = 'Hoja 1';
 const WSP_NUMBER = '5492644000000'; // reemplazá con el número real
 
-// Columnas del Sheet (índices, base 0)
-// A=Titulo B=Autor C=Genero D=Precio_BS E=Disponible F=ISBN G=Portada_URL H=Reseña
-const COL = { titulo:0, autor:1, genero:2, precio:3, disponible:4, isbn:5, portadaUrl:6, resena:7 };
+// FIX 1: Columnas corregidas según la estructura real del Sheet interno:
+// A(0)=TITULO  B(1)=AUTOR  C(2)=Costo  D(3)=Precio cuspide
+// E(4)=Precio encargo  F(5)=disponibilidad  G(6)=Precio stock
+// H(7)=Género  I(8)=PORTADA (columna nueva a agregar en el Sheet)
+const COL = {
+  titulo:      0,
+  autor:       1,
+  precio:      4,   // Precio encargo — el que se muestra al público
+  disponible:  5,
+  genero:      7,   // Género — columna H
+  portadaUrl:  8,   // PORTADA — columna I (nueva)
+};
 
-// ─────────────────────────────────────────────
 const GBOOKS = 'https://www.googleapis.com/books/v1/volumes?q=';
 let allBooks = [];
 let filtered = [];
 
-// ── Cargar Sheet ─────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// CARGA DEL SHEET
+// ─────────────────────────────────────────────────────────────────────────────
 async function loadSheet() {
   const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
   try {
-    const res = await fetch(url);
+    const res  = await fetch(url);
     const text = await res.text();
     const json = JSON.parse(text.substring(47, text.length - 2));
     const rows = json.table.rows;
 
     allBooks = rows
       .map(r => ({
-        titulo:      cell(r,COL.titulo),
-        autor:       cell(r,COL.autor),
-        genero:      cell(r,COL.genero),
-        precio:      parseFloat((cell(r,COL.precio)||'0').replace(/[^0-9.]/g,'')),
-        disponible:  (cell(r,COL.disponible)||'').toLowerCase() !== 'false' && (cell(r,COL.disponible)||'').toLowerCase() !== 'no',
-        isbn:        cell(r,COL.isbn),
-        portadaUrl:  cell(r,COL.portadaUrl),
-        resena:      cell(r,COL.resena),
-        _cover:      null,
-        _desc:       null,
-        _pages:      null,
-        _publisher:  null,
+        titulo:     cell(r, COL.titulo),
+        autor:      cell(r, COL.autor),
+        precio:     parseFloat((cell(r, COL.precio) || '0').replace(/[^0-9.]/g, '')),
+        disponible: parseDisponible(cell(r, COL.disponible)),
+        genero:     cell(r, COL.genero),
+        portadaUrl: cell(r, COL.portadaUrl),  // FIX 2: URL manual desde el Sheet
+        // Datos que se buscan en Google Books (solo texto, no imagen)
+        _desc:      null,
+        _pages:     null,
+        _publisher: null,
+        _fetched:   false, // para no repetir la búsqueda
       }))
       .filter(b => b.titulo && b.disponible && b.precio > 0);
 
@@ -723,19 +801,28 @@ function cell(row, idx) {
   catch { return ''; }
 }
 
-// ── Filtros ──────────────────────────────────
+function parseDisponible(val) {
+  if (!val) return true; // si no hay nada, asumimos disponible
+  const v = val.toLowerCase();
+  return v !== 'false' && v !== 'no' && v !== '0';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FILTROS
+// ─────────────────────────────────────────────────────────────────────────────
 function populateGenreFilter() {
-  const genres = [...new Set(allBooks.map(b=>b.genero).filter(Boolean))].sort();
+  const genres = [...new Set(allBooks.map(b => b.genero).filter(Boolean))].sort();
   const sel = document.getElementById('filter-genre');
   genres.forEach(g => {
     const o = document.createElement('option');
-    o.value = g; o.textContent = g;
+    o.value = g;
+    o.textContent = g;
     sel.appendChild(o);
   });
 }
 
 function applyFilters() {
-  const q     = document.getElementById('search').value.toLowerCase().trim();
+  const q    = document.getElementById('search').value.toLowerCase().trim();
   const genre = document.getElementById('filter-genre').value;
   const maxP  = parseFloat(document.getElementById('filter-price').value) || Infinity;
 
@@ -748,18 +835,20 @@ function applyFilters() {
   renderGrid();
 }
 
-['search','filter-genre','filter-price'].forEach(id => {
+['search', 'filter-genre', 'filter-price'].forEach(id => {
   document.getElementById(id).addEventListener('input', applyFilters);
   document.getElementById(id).addEventListener('change', applyFilters);
 });
 
-// ── Render grilla ─────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER GRILLA
+// ─────────────────────────────────────────────────────────────────────────────
 function renderGrid() {
-  const grid = document.getElementById('grid');
+  const grid  = document.getElementById('grid');
   const empty = document.getElementById('empty');
   const count = document.getElementById('results-count');
 
-  count.textContent = `${filtered.length} título${filtered.length!==1?'s':''}`;
+  count.textContent = `${filtered.length} título${filtered.length !== 1 ? 's' : ''}`;
 
   if (!filtered.length) {
     grid.innerHTML = '';
@@ -768,182 +857,194 @@ function renderGrid() {
   }
   empty.style.display = 'none';
 
-  grid.innerHTML = filtered.map((b,i) => `
-    <div class="card" onclick="openModal(${allBooks.indexOf(b)})"
-         style="animation-delay:${Math.min(i*0.04,0.6)}s">
-      <div class="card-cover" id="cover-${allBooks.indexOf(b)}">
-        ${coverHTML(b)}
-      </div>
-      <div class="card-body">
-        <div class="card-title">${esc(b.titulo)}</div>
-        <div class="card-author">${esc(b.autor)}</div>
-        <div class="card-genre">${esc(b.genero)}</div>
-        <div class="card-footer">
-          <span class="card-price">${fmt(b.precio)}</span>
-          <button class="card-btn" title="Ver detalles" onclick="event.stopPropagation();openModal(${allBooks.indexOf(b)})">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  // Lazy-load covers
-  filtered.forEach(b => {
+  grid.innerHTML = filtered.map((b, i) => {
     const idx = allBooks.indexOf(b);
-    if (!b._cover && !b.portadaUrl) {
-      fetchCover(b, idx);
-    } else if (b.portadaUrl) {
-      setCardCover(idx, b.portadaUrl);
-    } else {
-      setCardCover(idx, b._cover);
-    }
-  });
+    return `
+      <div class="card" onclick="openModal(${idx})"
+           style="animation-delay:${Math.min(i * 0.04, 0.6)}s">
+        <div class="card-cover">
+          ${coverHTML(b)}
+        </div>
+        <div class="card-body">
+          <div class="card-title">${esc(b.titulo)}</div>
+          <div class="card-author">${esc(b.autor)}</div>
+          <div class="card-genre">${esc(b.genero)}</div>
+          <div class="card-footer">
+            <span class="card-price">${fmt(b.precio)}</span>
+            <button class="card-btn" title="Ver detalles"
+                    onclick="event.stopPropagation();openModal(${idx})">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
 }
 
+// FIX 2: coverHTML solo usa portadaUrl manual; si no hay, muestra placeholder
 function coverHTML(b) {
-  const src = b.portadaUrl || b._cover;
-  if (src) return `<img src="${src}" alt="${esc(b.titulo)}" loading="lazy" onerror="this.parentElement.innerHTML=placeholderHTML('${esc(b.titulo)}')">`;
+  if (b.portadaUrl) {
+    return `<img src="${esc(b.portadaUrl)}" alt="${esc(b.titulo)}" loading="lazy"
+                 onerror="this.parentElement.innerHTML=placeholderHTML('${esc(b.titulo).replace(/'/g,"\\'")}')">`;
+  }
   return placeholderHTML(b.titulo);
 }
 
 function placeholderHTML(titulo) {
   return `<div class="cover-placeholder">
     <svg class="cover-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-      <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+      <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
     </svg>
     <span class="cover-placeholder-title">${esc(titulo)}</span>
   </div>`;
 }
 
-// ── Google Books ──────────────────────────────
-async function fetchCover(book, idx) {
-  if (book._cover !== null) return;
-  book._cover = '';
+// ─────────────────────────────────────────────────────────────────────────────
+// FIX 3: Google Books — solo para reseña, páginas y editorial (sin imágenes)
+// ─────────────────────────────────────────────────────────────────────────────
+async function fetchBookData(book) {
+  if (book._fetched) return; // ya se buscó, no repetir
+  book._fetched = true;
 
   try {
-    const query = book.isbn
-      ? `isbn:${book.isbn}`
-      : `intitle:${encodeURIComponent(book.titulo)}+inauthor:${encodeURIComponent(book.autor.split(',')[0])}`;
+    // Busca por título + primer palabra del autor para mayor precisión
+    const authorQ  = book.autor.split(' ')[0];
+    const query    = `intitle:${encodeURIComponent(book.titulo)}+inauthor:${encodeURIComponent(authorQ)}`;
+    const res      = await fetch(`${GBOOKS}${query}&maxResults=1&fields=items(volumeInfo/description,volumeInfo/pageCount,volumeInfo/publisher)`);
 
-    const res  = await fetch(`${GBOOKS}${query}&maxResults=1&langRestrict=es&fields=items(volumeInfo/imageLinks,volumeInfo/description,volumeInfo/pageCount,volumeInfo/publisher)`);
+    if (!res.ok) return; // no rompe si falla la conexión
+
     const data = await res.json();
-    const item = data.items?.[0]?.volumeInfo;
+    const info = data.items?.[0]?.volumeInfo;
 
-    if (item) {
-      book._cover     = (item.imageLinks?.thumbnail || item.imageLinks?.smallThumbnail || '').replace('http:','https:').replace('&zoom=1','&zoom=2');
-      book._desc      = item.description || '';
-      book._pages     = item.pageCount   || null;
-      book._publisher = item.publisher   || null;
+    if (info) {
+      book._desc      = info.description  || null;
+      book._pages     = info.pageCount    || null;
+      book._publisher = info.publisher    || null;
     }
-    if (book._cover) setCardCover(idx, book._cover);
-  } catch(e) { /* silencioso */ }
+  } catch(e) {
+    // Silencioso: si Google Books falla, el modal igual se abre sin esos datos
+  }
 }
 
-function setCardCover(idx, src) {
-  const el = document.getElementById(`cover-${idx}`);
-  if (!el || !src) return;
-  el.innerHTML = `<img src="${src}" alt="" loading="lazy" onerror="this.parentElement.innerHTML=placeholderHTML(allBooks[${idx}].titulo)">`;
-}
-
-// ── Modal ─────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// MODAL
+// ─────────────────────────────────────────────────────────────────────────────
 async function openModal(idx) {
-  const b = allBooks[idx];
+  const b       = allBooks[idx];
   const overlay = document.getElementById('modal-overlay');
   const coverCol = document.getElementById('modal-cover-col');
-  const info = document.getElementById('modal-info');
+  const info    = document.getElementById('modal-info');
 
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  // Cover
-  const coverSrc = b.portadaUrl || b._cover;
-  coverCol.innerHTML = coverSrc
-    ? `<img src="${coverSrc}" alt="${esc(b.titulo)}" style="width:200px;object-fit:cover;max-height:360px;">`
+  // Portada: solo la manual; si no hay, placeholder
+  coverCol.innerHTML = b.portadaUrl
+    ? `<img src="${esc(b.portadaUrl)}" alt="${esc(b.titulo)}"
+            style="width:200px;object-fit:cover;max-height:360px;"
+            onerror="this.parentElement.innerHTML=placeholderHTML('${esc(b.titulo).replace(/'/g,"\\'")}');">`
     : placeholderHTML(b.titulo);
 
-  // Descripción y metadatos
-  let descHTML = '';
-  if (b.resena) {
-    descHTML = `<p class="modal-desc">${esc(b.resena)}</p>`;
-  } else if (b._desc) {
-    descHTML = `<p class="modal-desc">${esc(b._desc.substring(0,400))}${b._desc.length>400?'…':''}</p>`;
-  } else if (b._cover !== null && !b._desc) {
-    descHTML = `<p class="modal-loading">Sin descripción disponible.</p>`;
-  } else {
-    descHTML = `<p class="modal-loading">Buscando información…</p>`;
-  }
-
+  // Mostrar modal básico primero (sin esperar Google Books)
   const wspMsg = encodeURIComponent(`Hola Baker Street, quiero encargar: *${b.titulo}* de ${b.autor} — ${fmt(b.precio)}`);
-  const metaExtra = [
-    b._publisher ? `<div class="meta-item"><span class="meta-label">Editorial</span><span class="meta-value">${esc(b._publisher)}</span></div>` : '',
-    b._pages     ? `<div class="meta-item"><span class="meta-label">Páginas</span><span class="meta-value">${b._pages}</span></div>` : '',
-  ].join('');
 
   info.innerHTML = `
     <span class="modal-genre-tag">${esc(b.genero)}</span>
     <div class="modal-title">${esc(b.titulo)}</div>
     <div class="modal-author">${esc(b.autor)}</div>
-    ${metaExtra ? `<div class="modal-meta">${metaExtra}</div>` : ''}
     <div class="modal-price-row">
       <span class="modal-price-label">Precio Baker Street</span>
       <span class="modal-price">${fmt(b.precio)}</span>
     </div>
-    <div id="modal-desc-slot">${descHTML}</div>
+    <div id="modal-extra">
+      <p class="modal-loading">Buscando información del libro…</p>
+    </div>
     <div class="modal-actions">
-      <a class="btn-wsp" href="https://wa.me/${WSP_NUMBER}?text=${wspMsg}" target="_blank">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/></svg>
+      <a class="btn-wsp"
+         href="https://wa.me/${WSP_NUMBER}?text=${wspMsg}"
+         target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/>
+        </svg>
         Encargar este libro
       </a>
     </div>
   `;
 
-  // Si no hay datos aún, buscarlos y actualizar
-  if (!b._cover && !b.portadaUrl) {
-    await fetchCover(b, idx);
-    if (b._cover) {
-      coverCol.innerHTML = `<img src="${b._cover}" alt="${esc(b.titulo)}" style="width:200px;object-fit:cover;max-height:360px;">`;
-    }
-    const slot = document.getElementById('modal-desc-slot');
-    if (slot) {
-      slot.innerHTML = b.resena
-        ? `<p class="modal-desc">${esc(b.resena)}</p>`
-        : b._desc
-          ? `<p class="modal-desc">${esc(b._desc.substring(0,400))}${b._desc.length>400?'…':''}</p>`
-          : `<p class="modal-loading">Sin descripción disponible.</p>`;
-    }
+  // Buscar datos en Google Books y actualizar la sección extra
+  await fetchBookData(b);
+
+  const extraSlot = document.getElementById('modal-extra');
+  if (!extraSlot) return; // el usuario cerró el modal mientras cargaba
+
+  // Construir sección extra con lo que se encontró
+  let extraHTML = '';
+
+  // Metadatos (páginas y editorial) — solo si hay algo
+  const metaItems = [
+    b._publisher ? `<div class="meta-item"><span class="meta-label">Editorial</span><span class="meta-value">${esc(b._publisher)}</span></div>` : '',
+    b._pages     ? `<div class="meta-item"><span class="meta-label">Páginas</span><span class="meta-value">${b._pages}</span></div>` : '',
+  ].filter(Boolean).join('');
+
+  if (metaItems) {
+    extraHTML += `<div class="modal-meta">${metaItems}</div>`;
   }
+
+  // Reseña
+  if (b._desc) {
+    const desc = b._desc.length > 500 ? b._desc.substring(0, 500) + '…' : b._desc;
+    extraHTML += `<p class="modal-desc">${esc(desc)}</p>`;
+  }
+
+  // Si no se encontró nada, no mostrar nada (sin el texto "Sin descripción")
+  extraSlot.innerHTML = extraHTML || '';
 }
 
 function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
+
 document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('modal-overlay').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeModal();
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
 
-// ── Fallback (sheet privado / error) ─────────
+// ─────────────────────────────────────────────────────────────────────────────
+// FALLBACK
+// ─────────────────────────────────────────────────────────────────────────────
 function renderFallback() {
   document.getElementById('grid').innerHTML = `
     <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:#555">
       <p style="font-size:15px">No pudimos cargar el catálogo. Verificá que el Google Sheet sea público.</p>
       <a href="https://wa.me/${WSP_NUMBER}?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20por%20un%20libro"
-         class="wsp-main" style="margin:1.5rem auto 0;display:inline-flex" target="_blank">Consultanos directamente</a>
+         class="wsp-main" style="margin:1.5rem auto 0;display:inline-flex" target="_blank">
+        Consultanos directamente
+      </a>
     </div>`;
 }
 
-// ── Utils ────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────────────────────────────────────
 function fmt(n) {
   return '$' + Math.round(n).toLocaleString('es-AR');
 }
 function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ── Init ──────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────────────────────
 loadSheet();
 </script>
 </body>

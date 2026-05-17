@@ -1,436 +1,1051 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baker Street — Libros a Pedido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── VARIABLES ─────────────────────────────────── */
+:root {
+  --amarillo: #FCB300;
+  --amarillo-dark: #e0a000;
+  --negro: #0a0a0a;
+  --negro-suave: #141414;
+  --gris: #1e1e1e;
+  --gris-medio: #2a2a2a;
+  --texto-claro: #c8b98a;
+  --texto-muy-claro: #e8dfc0;
+  --blanco: #f8f5ee;
+  --radio: 4px;
+}
+
+/* ── RESET ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--negro);
+  color: var(--blanco);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ────────────────────────────────────── */
+header {
+  background: var(--negro);
+  border-bottom: 1px solid #222;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+.logo-circle {
+  width: 44px;
+  height: 44px;
+  background: var(--amarillo);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.logo-circle svg { width: 30px; height: 30px; }
+.logo-text { display: flex; flex-direction: column; line-height: 1; }
+.logo-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--blanco);
+  letter-spacing: 1px;
+}
+.logo-sub {
+  font-size: 11px;
+  color: var(--amarillo);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+.header-badge {
+  background: var(--gris);
+  border: 1px solid #333;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--texto-claro);
+  letter-spacing: 1px;
+  display: none;
+}
+@media(min-width:600px){ .header-badge { display: block; } }
+
+/* ── HERO ──────────────────────────────────────── */
+.hero {
+  padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem);
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+@media(min-width:768px){
+  .hero { grid-template-columns: 1fr 1fr; align-items: end; }
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: var(--blanco);
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--amarillo);
+}
+.hero-right { display: flex; flex-direction: column; gap: 1.5rem; }
+.hero-desc {
+  font-size: clamp(15px, 2vw, 17px);
+  color: var(--texto-claro);
+  line-height: 1.7;
+  max-width: 460px;
+}
+.how-it-works {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 1.5rem;
+  background: var(--gris);
+  border-left: 3px solid var(--amarillo);
+  border-radius: var(--radio);
+}
+.how-title {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--amarillo);
+  margin-bottom: 4px;
+}
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--texto-muy-claro);
+  line-height: 1.5;
+}
+.step-num {
+  width: 22px;
+  height: 22px;
+  background: var(--amarillo);
+  color: var(--negro);
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.wsp-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--amarillo);
+  color: var(--negro);
+  padding: 14px 24px;
+  border-radius: var(--radio);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background .2s, transform .15s;
+  align-self: flex-start;
+}
+.wsp-main:hover { background: var(--amarillo-dark); transform: translateY(-2px); }
+.wsp-main svg { width: 20px; height: 20px; }
+
+/* ── BARRA CONTROLES ───────────────────────────── */
+.controls-bar {
+  background: var(--negro-suave);
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #222;
+  padding: 16px clamp(1rem, 4vw, 3rem);
+  position: sticky;
+  top: 72px;
+  z-index: 90;
+}
+.controls-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.search-wrap {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #555;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+#search {
+  width: 100%;
+  background: var(--gris);
+  border: 1px solid #333;
+  color: var(--blanco);
+  padding: 10px 14px 10px 40px;
+  border-radius: var(--radio);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color .2s;
+}
+#search::placeholder { color: #555; }
+#search:focus { border-color: var(--amarillo); }
+select {
+  background: var(--gris);
+  border: 1px solid #333;
+  color: var(--blanco);
+  padding: 10px 14px;
+  border-radius: var(--radio);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  cursor: pointer;
+  transition: border-color .2s;
+}
+select:focus { border-color: var(--amarillo); }
+.results-count {
+  font-size: 13px;
+  color: #555;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+/* ── GRILLA ────────────────────────────────────── */
+.catalog-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 4vw, 3rem) 4rem;
+}
+#grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+@media(min-width:480px){ #grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
+@media(min-width:900px){ #grid { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); } }
+
+/* ── TARJETA ───────────────────────────────────── */
+.card {
+  background: var(--gris);
+  border: 1px solid #2a2a2a;
+  border-radius: var(--radio);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+  animation: fadeUp .4s both;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: #444;
+  box-shadow: 0 12px 32px rgba(0,0,0,.5);
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card-cover {
+  aspect-ratio: 2/3;
+  overflow: hidden;
+  background: var(--gris-medio);
+  position: relative;
+}
+.card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .3s;
+}
+.card:hover .card-cover img { transform: scale(1.04); }
+.cover-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  background: linear-gradient(135deg, #1a1a1a, #252525);
+  gap: 8px;
+}
+.cover-placeholder-icon { color: #444; width: 36px; height: 36px; }
+.cover-placeholder-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  color: #777;
+  line-height: 1.3;
+}
+.card-body { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blanco);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-author {
+  font-size: 12px;
+  color: var(--texto-claro);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-genre {
+  font-size: 11px;
+  color: #555;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #2a2a2a;
+}
+.card-price {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--amarillo);
+  font-family: 'Playfair Display', serif;
+}
+.card-btn {
+  width: 32px;
+  height: 32px;
+  background: var(--amarillo);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+  flex-shrink: 0;
+}
+.card-btn:hover { background: var(--amarillo-dark); transform: scale(1.1); }
+.card-btn svg { width: 16px; height: 16px; color: var(--negro); }
+
+/* ── MODAL ─────────────────────────────────────── */
+#modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+#modal-overlay.open { display: flex; }
+#modal {
+  background: var(--gris);
+  border: 1px solid #333;
+  border-radius: 8px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  animation: modalIn .25s cubic-bezier(.16,1,.3,1);
+  position: relative;
+}
+@media(min-width:560px){
+  #modal { grid-template-columns: 200px 1fr; }
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(.95) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-cover-col {
+  background: var(--gris-medio);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+}
+.modal-cover-col img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.modal-cover-col .cover-placeholder {
+  height: 100%;
+  min-height: 260px;
+}
+.modal-info { padding: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  background: #333;
+  border: none;
+  border-radius: 50%;
+  color: var(--blanco);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  transition: background .2s;
+  z-index: 10;
+}
+.modal-close:hover { background: #444; }
+.modal-genre-tag {
+  display: inline-block;
+  background: rgba(252,179,0,.15);
+  color: var(--amarillo);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  align-self: flex-start;
+}
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 900;
+  color: var(--blanco);
+  line-height: 1.2;
+}
+.modal-author {
+  font-size: 15px;
+  color: var(--texto-claro);
+}
+.modal-meta {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.meta-item { display: flex; flex-direction: column; gap: 2px; }
+.meta-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #555; }
+.meta-value { font-size: 14px; color: var(--blanco); }
+.modal-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: var(--negro);
+  border-radius: var(--radio);
+  border: 1px solid #2a2a2a;
+}
+.modal-price-label { font-size: 12px; color: #555; }
+.modal-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--amarillo);
+}
+.modal-desc {
+  font-size: 14px;
+  color: var(--texto-claro);
+  line-height: 1.7;
+  max-height: 140px;
+  overflow-y: auto;
+}
+.modal-desc::-webkit-scrollbar { width: 4px; }
+.modal-desc::-webkit-scrollbar-track { background: transparent; }
+.modal-desc::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+.modal-loading {
+  color: #555;
+  font-size: 13px;
+  font-style: italic;
+}
+.modal-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: auto; }
+.btn-wsp {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--amarillo);
+  color: var(--negro);
+  padding: 13px 20px;
+  border-radius: var(--radio);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background .2s, transform .15s;
+}
+.btn-wsp:hover { background: var(--amarillo-dark); transform: translateY(-1px); }
+.btn-wsp svg { width: 18px; height: 18px; }
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--texto-claro);
+  padding: 13px 20px;
+  border-radius: var(--radio);
+  border: 1px solid #333;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.btn-secondary:hover { border-color: var(--amarillo); color: var(--amarillo); }
+
+/* ── EMPTY STATE ───────────────────────────────── */
+#empty {
+  display: none;
+  text-align: center;
+  padding: 5rem 1rem;
+  color: #555;
+}
+#empty svg { width: 48px; height: 48px; color: #333; margin-bottom: 1rem; }
+#empty p { font-size: 15px; margin-top: 0.5rem; }
+
+/* ── FOOTER ────────────────────────────────────── */
+footer {
+  border-top: 1px solid #1e1e1e;
+  padding: 2rem clamp(1rem, 4vw, 3rem);
+  text-align: center;
+  color: #444;
+  font-size: 13px;
+  line-height: 1.8;
+}
+footer a { color: var(--amarillo); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* ── SKELETON ──────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radio);
+}
+@keyframes shimmer {
+  0%  { background-position: 200% 0; }
+  100%{ background-position: -200% 0; }
+}
+.skel-card { height: 340px; border-radius: var(--radio); }
+
+/* ── SCROLLBAR ─────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--negro); }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+/* ── BOTÓN FLOTANTE WHATSAPP ───────────────────── */
+.wsp-float {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #1a1a1a;
+  border: 1px solid #2e2e2e;
+  border-radius: 50px;
+  padding: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,.5);
+  transition: padding .25s ease, gap .25s ease, border-color .25s ease, box-shadow .25s ease;
+  overflow: hidden;
+  max-width: 52px;
+}
+.wsp-float:hover {
+  padding: 12px 18px 12px 14px;
+  gap: 8px;
+  border-color: #3a3a2a;
+  box-shadow: 0 6px 28px rgba(252,179,0,.15);
+  max-width: 180px;
+}
+.wsp-float-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  color: var(--amarillo);
+  transition: transform .2s;
+}
+.wsp-float:hover .wsp-float-icon {
+  transform: scale(1.08);
+}
+.wsp-float-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--texto-claro);
+  white-space: nowrap;
+  opacity: 0;
+  width: 0;
+  transition: opacity .2s ease .05s, width .25s ease;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+}
+.wsp-float:hover .wsp-float-label {
+  opacity: 1;
+  width: auto;
+}
+</style>
+</head>
+<body>
+
 <!-- ── HEADER ── -->
 <header>
   <a class="logo-wrap" href="#">
-    
-    <!-- REEMPLAZÁ src POR TU LOGO -->
-    <img src="logo-bakerstreet.png" alt="Baker Street" class="logo-img">
-
+    <div class="logo-circle">
+      <svg viewBox="0 0 100 100" fill="#0a0a0a" xmlns="http://www.w3.org/2000/svg">
+        <path d="M58 9C47 7 36 13 31 23 26 32 28 43 35 49 28 53 23 60 22 68L19 83C18 88 22 91 27 91L73 91C78 91 82 88 81 83L78 68C77 60 72 53 65 49 72 43 74 32 69 23 64 13 69 11 58 9ZM45 51C38 49 33 43 35 36 37 28 45 22 54 23 63 24 69 31 68 39 67 45 61 51 54 51ZM37 63C39 57 46 53 54 53 62 53 69 57 71 63L72 79 28 79Z"/>
+      </svg>
+    </div>
     <div class="logo-text">
       <span class="logo-name">Baker Street</span>
       <span class="logo-sub">Librería · San Juan</span>
     </div>
   </a>
-
   <span class="header-badge">Libros a Pedido</span>
 </header>
 
 <!-- ── HERO ── -->
 <section class="hero">
   <div>
-    <h1 class="hero-title">
-      Libros<br>
-      <em>nuevos</em><br>
-      Precios<br>
-      <em>reales</em>
-    </h1>
+    <h1 class="hero-title">Libros<br><em>nuevos.</em><br>Precios<br><em>reales.</em></h1>
   </div>
-
   <div class="hero-right">
     <p class="hero-desc">
       Más de 300 títulos disponibles para encargar. Elegís el libro, nosotros lo conseguimos en Buenos Aires y te llega a tu casa en San Juan.
     </p>
-
     <div class="how-it-works">
       <span class="how-title">Cómo funciona</span>
-
       <div class="step">
         <div class="step-num">1</div>
         <span>Elegís tu libro en el catálogo o nos consultás por cualquier título</span>
       </div>
-
       <div class="step">
         <div class="step-num">2</div>
         <span>Confirmamos disponibilidad y precio. Pagás el 100% por adelantado</span>
       </div>
-
       <div class="step">
         <div class="step-num">3</div>
         <span>En aproximadamente 10 días el libro llega a tu puerta en San Juan</span>
       </div>
     </div>
-
-    <a class="wsp-main"
-       href="https://wa.me/5492646609410?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20sobre%20un%20libro"
-       target="_blank">
-
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/>
-      </svg>
-
+    <a class="wsp-main" href="https://wa.me/5492644000000?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20sobre%20un%20libro" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/></svg>
       Consultanos por WhatsApp
     </a>
   </div>
 </section>
 
+<!-- ── CONTROLES ── -->
+<div class="controls-bar">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search" placeholder="Buscar título o autor…" autocomplete="off">
+    </div>
+    <select id="filter-genre">
+      <!-- FIX 5: opción default cambiada a "Género" -->
+      <option value="">Género</option>
+    </select>
+    <select id="filter-price">
+      <option value="">Cualquier precio</option>
+      <option value="15000">Hasta $15.000</option>
+      <option value="20000">Hasta $20.000</option>
+      <option value="25000">Hasta $25.000</option>
+      <option value="35000">Hasta $35.000</option>
+    </select>
+    <span class="results-count" id="results-count"></span>
+  </div>
+</div>
+
+<!-- ── CATÁLOGO ── -->
+<main class="catalog-section">
+  <div id="grid"></div>
+  <div id="empty">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    <p>No encontramos libros con ese criterio.</p>
+    <p>Probá con otro término o escribinos directamente.</p>
+  </div>
+</main>
+
+<!-- ── MODAL ── -->
+<div id="modal-overlay" role="dialog" aria-modal="true">
+  <div id="modal">
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">×</button>
+    <div class="modal-cover-col" id="modal-cover-col"></div>
+    <div class="modal-info" id="modal-info"></div>
+  </div>
+</div>
+
 <!-- ── BOTÓN FLOTANTE WHATSAPP ── -->
 <a class="wsp-float"
-   href="https://wa.me/5492646609410?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20sobre%20un%20libro"
+   href="https://wa.me/5492644000000?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20sobre%20un%20libro"
    target="_blank"
    aria-label="Consultar por WhatsApp">
-
   <svg class="wsp-float-icon" viewBox="0 0 24 24" fill="currentColor">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
     <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/>
   </svg>
+  <span class="wsp-float-label">Consultar</span>
 </a>
-/* ── HEADER NUEVO ─────────────────────────────── */
-header{
-  background:rgba(10,10,10,.88);
-  backdrop-filter:blur(14px);
 
-  border-bottom:1px solid rgba(255,255,255,.05);
+<!-- ── FOOTER ── -->
+<footer>
+  <strong style="color:#c8b98a">Baker Street</strong> · Librería independiente · San Juan, Argentina<br>
+  <a href="https://instagram.com/bakerstreet.sj" target="_blank">@bakerstreet.sj</a> · Solo libros nuevos y originales<br>
+  <span style="font-size:12px;color:#333;margin-top:4px;display:block">Los precios pueden tener variaciones. Ante cualquier diferencia te avisamos antes de confirmar el pedido.</span>
+</footer>
 
-  padding:0 clamp(1rem,4vw,3rem);
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIGURACIÓN
+// ─────────────────────────────────────────────────────────────────────────────
+const SHEET_ID   = '12eSHieApU3pcMDWwrhEw_KUAIynZwCX9puaol2bGHRo';
+const SHEET_NAME = 'Hoja 1';
+const WSP_NUMBER = '5492644000000'; // reemplazá con el número real
 
-  position:sticky;
-  top:0;
-  z-index:100;
+// FIX 1: Columnas corregidas según la estructura real del Sheet interno:
+// A(0)=TITULO  B(1)=AUTOR  C(2)=Costo  D(3)=Precio cuspide
+// E(4)=Precio encargo  F(5)=disponibilidad  G(6)=Precio stock
+// H(7)=Género  I(8)=PORTADA (columna nueva a agregar en el Sheet)
+const COL = {
+  titulo:      0,
+  autor:       1,
+  precio:      4,   // Precio encargo — el que se muestra al público
+  disponible:  5,
+  genero:      7,   // Género — columna H
+  portadaUrl:  8,   // PORTADA — columna I (nueva)
+};
 
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+const GBOOKS = 'https://www.googleapis.com/books/v1/volumes?q=';
+let allBooks = [];
+let filtered = [];
 
-  height:88px;
-}
+// ─────────────────────────────────────────────────────────────────────────────
+// CARGA DEL SHEET
+// ─────────────────────────────────────────────────────────────────────────────
+async function loadSheet() {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+  try {
+    const res  = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.substring(47, text.length - 2));
+    const rows = json.table.rows;
 
-.logo-wrap{
-  display:flex;
-  align-items:center;
-  gap:18px;
-  text-decoration:none;
-}
+    allBooks = rows
+      .map(r => ({
+        titulo:     cell(r, COL.titulo),
+        autor:      cell(r, COL.autor),
+        precio:     parseFloat((cell(r, COL.precio) || '0').replace(/[^0-9.]/g, '')),
+        disponible: parseDisponible(cell(r, COL.disponible)),
+        genero:     cell(r, COL.genero),
+        portadaUrl: cell(r, COL.portadaUrl),  // FIX 2: URL manual desde el Sheet
+        // Datos que se buscan en Google Books (solo texto, no imagen)
+        _desc:      null,
+        _pages:     null,
+        _publisher: null,
+        _fetched:   false, // para no repetir la búsqueda
+      }))
+      .filter(b => b.titulo && b.disponible && b.precio > 0);
 
-.logo-img{
-  width:58px;
-  height:58px;
-  object-fit:contain;
-  border-radius:50%;
-}
-
-.logo-text{
-  display:flex;
-  flex-direction:column;
-  line-height:1;
-}
-
-.logo-name{
-  font-family:'Playfair Display',serif;
-  font-size:34px;
-  font-weight:900;
-  color:var(--blanco);
-  letter-spacing:-1px;
-}
-
-.logo-sub{
-  margin-top:6px;
-
-  font-size:11px;
-
-  letter-spacing:4px;
-  text-transform:uppercase;
-
-  color:var(--amarillo);
-}
-
-.header-badge{
-  background:rgba(252,179,0,.08);
-
-  border:1px solid rgba(252,179,0,.15);
-
-  padding:10px 18px;
-
-  border-radius:999px;
-
-  font-size:12px;
-  color:#e8dfc0;
-
-  letter-spacing:1px;
-}
-
-/* ── HERO ─────────────────────────────────────── */
-.hero{
-  padding:
-    clamp(4rem, 9vw, 7rem)
-    clamp(1.2rem, 5vw, 4rem)
-    clamp(3rem, 6vw, 5rem);
-
-  max-width:1400px;
-  margin:0 auto;
-
-  display:grid;
-  grid-template-columns:1fr;
-  gap:4rem;
-
-  position:relative;
-}
-
-.hero::before{
-  content:"";
-  position:absolute;
-
-  width:500px;
-  height:500px;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(252,179,0,.08),
-      transparent 70%
-    );
-
-  top:-180px;
-  left:-180px;
-
-  pointer-events:none;
-}
-
-@media(min-width:900px){
-  .hero{
-    grid-template-columns:1.05fr .95fr;
-    align-items:center;
+    populateGenreFilter();
+    filtered = [...allBooks];
+    renderGrid();
+  } catch(e) {
+    console.error('Error cargando Sheet:', e);
+    renderFallback();
   }
 }
 
-.hero-title{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(4rem, 9vw, 8rem);
-  font-weight:900;
-  line-height:.88;
-  color:var(--blanco);
-  letter-spacing:-2px;
+function cell(row, idx) {
+  try { return row.c[idx]?.v?.toString().trim() || ''; }
+  catch { return ''; }
 }
 
-.hero-title em{
-  color:var(--amarillo);
-  font-style:italic;
-  font-weight:700;
+function parseDisponible(val) {
+  if (!val) return true; // si no hay nada, asumimos disponible
+  const v = val.toLowerCase();
+  return v !== 'false' && v !== 'no' && v !== '0';
 }
 
-.hero-right{
-  display:flex;
-  flex-direction:column;
-  gap:2rem;
+// ─────────────────────────────────────────────────────────────────────────────
+// FILTROS
+// ─────────────────────────────────────────────────────────────────────────────
+function populateGenreFilter() {
+  const genres = [...new Set(allBooks.map(b => b.genero).filter(Boolean))].sort();
+  const sel = document.getElementById('filter-genre');
+  genres.forEach(g => {
+    const o = document.createElement('option');
+    o.value = g;
+    o.textContent = g;
+    sel.appendChild(o);
+  });
 }
 
-.hero-desc{
-  font-size:clamp(16px,2vw,19px);
-  color:#d6c79f;
-  line-height:1.8;
-  max-width:560px;
+function applyFilters() {
+  const q    = document.getElementById('search').value.toLowerCase().trim();
+  const genre = document.getElementById('filter-genre').value;
+  const maxP  = parseFloat(document.getElementById('filter-price').value) || Infinity;
+
+  filtered = allBooks.filter(b => {
+    const matchQ = !q || b.titulo.toLowerCase().includes(q) || b.autor.toLowerCase().includes(q);
+    const matchG = !genre || b.genero === genre;
+    const matchP = b.precio <= maxP;
+    return matchQ && matchG && matchP;
+  });
+  renderGrid();
 }
 
-/* ── HOW IT WORKS ─────────────────────────────── */
-.how-it-works{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
+['search', 'filter-genre', 'filter-price'].forEach(id => {
+  document.getElementById(id).addEventListener('input', applyFilters);
+  document.getElementById(id).addEventListener('change', applyFilters);
+});
 
-  padding:2rem;
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER GRILLA
+// ─────────────────────────────────────────────────────────────────────────────
+function renderGrid() {
+  const grid  = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  const count = document.getElementById('results-count');
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(30,30,30,.96),
-      rgba(20,20,20,.98)
-    );
+  count.textContent = `${filtered.length} título${filtered.length !== 1 ? 's' : ''}`;
 
-  border:1px solid rgba(252,179,0,.18);
-
-  border-radius:18px;
-
-  box-shadow:
-    0 10px 40px rgba(0,0,0,.45);
-}
-
-.how-title{
-  font-size:11px;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  color:var(--amarillo);
-  margin-bottom:6px;
-}
-
-.step{
-  display:flex;
-  align-items:flex-start;
-  gap:14px;
-
-  font-size:15px;
-  color:#e8dfc0;
-  line-height:1.7;
-}
-
-.step-num{
-  width:28px;
-  height:28px;
-
-  background:var(--amarillo);
-  color:#111;
-
-  border-radius:50%;
-
-  font-size:12px;
-  font-weight:700;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  flex-shrink:0;
-
-  margin-top:2px;
-}
-
-/* ── BOTÓN WHATSAPP HERO ─────────────────────── */
-.wsp-main{
-  display:inline-flex;
-  align-items:center;
-  gap:12px;
-
-  background:var(--amarillo);
-  color:#111;
-
-  padding:16px 30px;
-
-  border-radius:999px;
-
-  font-size:15px;
-  font-weight:700;
-  letter-spacing:.3px;
-
-  text-decoration:none;
-
-  box-shadow:
-    0 10px 30px rgba(252,179,0,.25);
-
-  transition:
-    transform .2s ease,
-    box-shadow .25s ease,
-    background .2s ease;
-
-  align-self:flex-start;
-}
-
-.wsp-main:hover{
-  background:#ffd15a;
-
-  transform:
-    translateY(-3px)
-    scale(1.02);
-
-  box-shadow:
-    0 18px 45px rgba(252,179,0,.32);
-}
-
-.wsp-main svg{
-  width:22px;
-  height:22px;
-}
-/* ── BOTÓN FLOTANTE WHATSAPP ───────────────────── */
-.wsp-float{
-  position:fixed;
-
-  bottom:24px;
-  right:24px;
-
-  z-index:999;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  width:68px;
-  height:68px;
-
-  border-radius:50%;
-
-  background:
-    linear-gradient(
-      145deg,
-      #ffd15a,
-      var(--amarillo)
-    );
-
-  color:#111;
-
-  text-decoration:none;
-
-  box-shadow:
-    0 10px 35px rgba(252,179,0,.35),
-    0 0 0 0 rgba(252,179,0,.45);
-
-  transition:
-    transform .2s ease,
-    box-shadow .25s ease;
-
-  animation:pulseWsp 2.8s infinite;
-}
-
-.wsp-float:hover{
-  transform:
-    translateY(-4px)
-    scale(1.06);
-
-  box-shadow:
-    0 18px 45px rgba(252,179,0,.45),
-    0 0 0 10px rgba(252,179,0,.08);
-}
-
-.wsp-float-icon{
-  width:34px;
-  height:34px;
-  color:#111;
-}
-
-.wsp-float-label{
-  display:none;
-}
-
-@keyframes pulseWsp{
-  0%{
-    box-shadow:
-      0 10px 35px rgba(252,179,0,.35),
-      0 0 0 0 rgba(252,179,0,.35);
+  if (!filtered.length) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
   }
+  empty.style.display = 'none';
 
-  70%{
-    box-shadow:
-      0 10px 35px rgba(252,179,0,.35),
-      0 0 0 18px rgba(252,179,0,0);
+  grid.innerHTML = filtered.map((b, i) => {
+    const idx = allBooks.indexOf(b);
+    return `
+      <div class="card" onclick="openModal(${idx})"
+           style="animation-delay:${Math.min(i * 0.04, 0.6)}s">
+        <div class="card-cover">
+          ${coverHTML(b)}
+        </div>
+        <div class="card-body">
+          <div class="card-title">${esc(b.titulo)}</div>
+          <div class="card-author">${esc(b.autor)}</div>
+          <div class="card-genre">${esc(b.genero)}</div>
+          <div class="card-footer">
+            <span class="card-price">${fmt(b.precio)}</span>
+            <button class="card-btn" title="Ver detalles"
+                    onclick="event.stopPropagation();openModal(${idx})">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// FIX 2: coverHTML solo usa portadaUrl manual; si no hay, muestra placeholder
+function coverHTML(b) {
+  if (b.portadaUrl) {
+    return `<img src="${esc(b.portadaUrl)}" alt="${esc(b.titulo)}" loading="lazy"
+                 onerror="this.parentElement.innerHTML=placeholderHTML('${esc(b.titulo).replace(/'/g,"\\'")}')">`;
   }
+  return placeholderHTML(b.titulo);
+}
 
-  100%{
-    box-shadow:
-      0 10px 35px rgba(252,179,0,.35),
-      0 0 0 0 rgba(252,179,0,0);
+function placeholderHTML(titulo) {
+  return `<div class="cover-placeholder">
+    <svg class="cover-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+      <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+    </svg>
+    <span class="cover-placeholder-title">${esc(titulo)}</span>
+  </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FIX 3: Google Books — solo para reseña, páginas y editorial (sin imágenes)
+// ─────────────────────────────────────────────────────────────────────────────
+async function fetchBookData(book) {
+  if (book._fetched) return; // ya se buscó, no repetir
+  book._fetched = true;
+
+  try {
+    // Busca por título + primer palabra del autor para mayor precisión
+    const authorQ  = book.autor.split(' ')[0];
+    const query    = `intitle:${encodeURIComponent(book.titulo)}+inauthor:${encodeURIComponent(authorQ)}`;
+    const res      = await fetch(`${GBOOKS}${query}&maxResults=1&fields=items(volumeInfo/description,volumeInfo/pageCount,volumeInfo/publisher)`);
+
+    if (!res.ok) return; // no rompe si falla la conexión
+
+    const data = await res.json();
+    const info = data.items?.[0]?.volumeInfo;
+
+    if (info) {
+      book._desc      = info.description  || null;
+      book._pages     = info.pageCount    || null;
+      book._publisher = info.publisher    || null;
+    }
+  } catch(e) {
+    // Silencioso: si Google Books falla, el modal igual se abre sin esos datos
   }
 }
 
-@media(max-width:768px){
-  .wsp-float{
-    width:62px;
-    height:62px;
+// ─────────────────────────────────────────────────────────────────────────────
+// MODAL
+// ─────────────────────────────────────────────────────────────────────────────
+async function openModal(idx) {
+  const b       = allBooks[idx];
+  const overlay = document.getElementById('modal-overlay');
+  const coverCol = document.getElementById('modal-cover-col');
+  const info    = document.getElementById('modal-info');
 
-    right:18px;
-    bottom:18px;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Portada: solo la manual; si no hay, placeholder
+  coverCol.innerHTML = b.portadaUrl
+    ? `<img src="${esc(b.portadaUrl)}" alt="${esc(b.titulo)}"
+            style="width:200px;object-fit:cover;max-height:360px;"
+            onerror="this.parentElement.innerHTML=placeholderHTML('${esc(b.titulo).replace(/'/g,"\\'")}');">`
+    : placeholderHTML(b.titulo);
+
+  // Mostrar modal básico primero (sin esperar Google Books)
+  const wspMsg = encodeURIComponent(`Hola Baker Street, quiero encargar: *${b.titulo}* de ${b.autor} — ${fmt(b.precio)}`);
+
+  info.innerHTML = `
+    <span class="modal-genre-tag">${esc(b.genero)}</span>
+    <div class="modal-title">${esc(b.titulo)}</div>
+    <div class="modal-author">${esc(b.autor)}</div>
+    <div class="modal-price-row">
+      <span class="modal-price-label">Precio Baker Street</span>
+      <span class="modal-price">${fmt(b.precio)}</span>
+    </div>
+    <div id="modal-extra">
+      <p class="modal-loading">Buscando información del libro…</p>
+    </div>
+    <div class="modal-actions">
+      <a class="btn-wsp"
+         href="https://wa.me/${WSP_NUMBER}?text=${wspMsg}"
+         target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/>
+        </svg>
+        Encargar este libro
+      </a>
+    </div>
+  `;
+
+  // Buscar datos en Google Books y actualizar la sección extra
+  await fetchBookData(b);
+
+  const extraSlot = document.getElementById('modal-extra');
+  if (!extraSlot) return; // el usuario cerró el modal mientras cargaba
+
+  // Construir sección extra con lo que se encontró
+  let extraHTML = '';
+
+  // Metadatos (páginas y editorial) — solo si hay algo
+  const metaItems = [
+    b._publisher ? `<div class="meta-item"><span class="meta-label">Editorial</span><span class="meta-value">${esc(b._publisher)}</span></div>` : '',
+    b._pages     ? `<div class="meta-item"><span class="meta-label">Páginas</span><span class="meta-value">${b._pages}</span></div>` : '',
+  ].filter(Boolean).join('');
+
+  if (metaItems) {
+    extraHTML += `<div class="modal-meta">${metaItems}</div>`;
   }
 
-  .wsp-float-icon{
-    width:30px;
-    height:30px;
+  // Reseña
+  if (b._desc) {
+    const desc = b._desc.length > 500 ? b._desc.substring(0, 500) + '…' : b._desc;
+    extraHTML += `<p class="modal-desc">${esc(desc)}</p>`;
   }
 
-  .logo-name{
-    font-size:28px;
-  }
-
-  .logo-img{
-    width:50px;
-    height:50px;
-  }
-
-  .header-badge{
-    display:none;
-  }
+  // Si no se encontró nada, no mostrar nada (sin el texto "Sin descripción")
+  extraSlot.innerHTML = extraHTML || '';
 }
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FALLBACK
+// ─────────────────────────────────────────────────────────────────────────────
+function renderFallback() {
+  document.getElementById('grid').innerHTML = `
+    <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:#555">
+      <p style="font-size:15px">No pudimos cargar el catálogo. Verificá que el Google Sheet sea público.</p>
+      <a href="https://wa.me/${WSP_NUMBER}?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20por%20un%20libro"
+         class="wsp-main" style="margin:1.5rem auto 0;display:inline-flex" target="_blank">
+        Consultanos directamente
+      </a>
+    </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────────────────────────────────────
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString('es-AR');
+}
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────────────────────
+loadSheet();
+</script>
+</body>
+</html>

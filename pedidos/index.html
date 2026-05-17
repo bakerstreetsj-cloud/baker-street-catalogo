@@ -11,14 +11,20 @@
 :root {
   --amarillo: #FCB300;
   --amarillo-dark: #e0a000;
+  --amarillo-glow: rgba(252,179,0,0.12);
+  --amarillo-glow-strong: rgba(252,179,0,0.22);
   --negro: #0a0a0a;
-  --negro-suave: #141414;
-  --gris: #1e1e1e;
-  --gris-medio: #2a2a2a;
+  --negro-suave: #111111;
+  --gris: #1a1a1a;
+  --gris-medio: #222222;
+  --gris-borde: #2a2a2a;
   --texto-claro: #c8b98a;
   --texto-muy-claro: #e8dfc0;
   --blanco: #f8f5ee;
   --radio: 4px;
+  --radio-lg: 16px;
+  --wsp-verde: #25D366;
+  --wsp-verde-dark: #1ebe5b;
 }
 
 /* ── RESET ─────────────────────────────────────── */
@@ -33,156 +39,242 @@ body {
   overflow-x: hidden;
 }
 
-/* ── HEADER ────────────────────────────────────── */
+/* ── HEADER PREMIUM ────────────────────────────── */
 header {
-  background: var(--negro);
-  border-bottom: 1px solid #222;
-  padding: 0 clamp(1rem, 4vw, 3rem);
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(252,179,0,0.08);
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
   position: sticky;
   top: 0;
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 72px;
+  height: 88px;
 }
+
 .logo-wrap {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
   text-decoration: none;
 }
+
 .logo-circle {
-  width: 44px;
-  height: 44px;
-  background: var(--amarillo);
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
   flex-shrink: 0;
+  box-shadow:
+    0 0 0 1px rgba(252,179,0,0.25),
+    0 0 18px rgba(252,179,0,0.12),
+    0 4px 16px rgba(0,0,0,0.5);
+  transition: box-shadow 0.3s ease;
 }
-.logo-circle svg { width: 30px; height: 30px; }
-.logo-text { display: flex; flex-direction: column; line-height: 1; }
+.logo-circle:hover {
+  box-shadow:
+    0 0 0 1px rgba(252,179,0,0.5),
+    0 0 28px rgba(252,179,0,0.22),
+    0 4px 20px rgba(0,0,0,0.6);
+}
+.logo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  gap: 5px;
+}
+
 .logo-name {
   font-family: 'Playfair Display', serif;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: clamp(22px, 3.5vw, 36px);
+  font-weight: 900;
   color: var(--blanco);
-  letter-spacing: 1px;
+  letter-spacing: 0.03em;
+  line-height: 1;
 }
+
 .logo-sub {
   font-size: 11px;
   color: var(--amarillo);
-  letter-spacing: 3px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  margin-top: 3px;
+  font-weight: 400;
+  font-family: 'DM Sans', sans-serif;
+  opacity: 0.85;
 }
+
 .header-badge {
-  background: var(--gris);
-  border: 1px solid #333;
-  padding: 6px 14px;
-  border-radius: 20px;
+  background: rgba(252,179,0,0.08);
+  border: 1px solid rgba(252,179,0,0.18);
+  padding: 7px 18px;
+  border-radius: 30px;
   font-size: 12px;
   color: var(--texto-claro);
-  letter-spacing: 1px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   display: none;
 }
 @media(min-width:600px){ .header-badge { display: block; } }
 
-/* ── HERO ──────────────────────────────────────── */
+/* ── HERO CINEMATOGRÁFICO ──────────────────────── */
 .hero {
-  padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem);
+  position: relative;
+  padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 4rem) clamp(4rem, 7vw, 7rem);
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 3.5rem;
+  overflow: hidden;
 }
+
+/* Glow de fondo del hero */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: -120px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, rgba(252,179,0,0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero > * { position: relative; z-index: 1; }
+
 @media(min-width:768px){
-  .hero { grid-template-columns: 1fr 1fr; align-items: end; }
+  .hero {
+    grid-template-columns: 1.15fr 1fr;
+    align-items: center;
+    gap: 5rem;
+  }
 }
+
 .hero-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-size: clamp(3.8rem, 9vw, 7.5rem);
   font-weight: 900;
-  line-height: 0.95;
+  line-height: 0.88;
   color: var(--blanco);
+  letter-spacing: -0.02em;
 }
+
 .hero-title em {
   font-style: italic;
   color: var(--amarillo);
 }
-.hero-right { display: flex; flex-direction: column; gap: 1.5rem; }
-.hero-desc {
-  font-size: clamp(15px, 2vw, 17px);
-  color: var(--texto-claro);
-  line-height: 1.7;
-  max-width: 460px;
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
+
+.hero-desc {
+  font-size: clamp(15px, 1.8vw, 17px);
+  color: var(--texto-claro);
+  line-height: 1.8;
+  max-width: 440px;
+  font-weight: 300;
+}
+
+/* ── HOW IT WORKS PREMIUM ──────────────────────── */
 .how-it-works {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 1.5rem;
-  background: var(--gris);
+  gap: 14px;
+  padding: 2rem 2rem 2rem 1.8rem;
+  background: linear-gradient(135deg, #181818 0%, #141414 60%, #111 100%);
+  border: 1px solid rgba(252,179,0,0.14);
   border-left: 3px solid var(--amarillo);
-  border-radius: var(--radio);
+  border-radius: var(--radio-lg);
+  box-shadow:
+    0 8px 40px rgba(0,0,0,0.5),
+    0 0 0 0px rgba(252,179,0,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.03);
 }
+
 .how-title {
-  font-size: 11px;
-  letter-spacing: 3px;
+  font-size: 10px;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--amarillo);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
 }
+
 .step {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 16px;
   font-size: 14px;
   color: var(--texto-muy-claro);
-  line-height: 1.5;
+  line-height: 1.6;
+  font-weight: 300;
 }
+
 .step-num {
-  width: 22px;
-  height: 22px;
+  min-width: 28px;
+  height: 28px;
   background: var(--amarillo);
   color: var(--negro);
   border-radius: 50%;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   margin-top: 1px;
+  font-family: 'Playfair Display', serif;
+  box-shadow: 0 2px 10px rgba(252,179,0,0.25);
 }
+
+/* ── BOTÓN PRINCIPAL WHATSAPP ──────────────────── */
 .wsp-main {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   background: var(--amarillo);
   color: var(--negro);
-  padding: 14px 24px;
-  border-radius: var(--radio);
+  padding: 18px 32px;
+  border-radius: 50px;
   font-size: 15px;
   font-weight: 500;
   text-decoration: none;
-  transition: background .2s, transform .15s;
+  transition: background 0.25s, transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s;
   align-self: flex-start;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 20px rgba(252,179,0,0.2), 0 2px 8px rgba(0,0,0,0.3);
+  font-family: 'DM Sans', sans-serif;
 }
-.wsp-main:hover { background: var(--amarillo-dark); transform: translateY(-2px); }
-.wsp-main svg { width: 20px; height: 20px; }
+.wsp-main:hover {
+  background: var(--amarillo-dark);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 32px rgba(252,179,0,0.35), 0 4px 16px rgba(0,0,0,0.4);
+}
+.wsp-main svg { width: 22px; height: 22px; flex-shrink: 0; }
 
 /* ── BARRA CONTROLES ───────────────────────────── */
 .controls-bar {
   background: var(--negro-suave);
-  border-top: 1px solid #222;
-  border-bottom: 1px solid #222;
-  padding: 16px clamp(1rem, 4vw, 3rem);
+  border-top: 1px solid #1e1e1e;
+  border-bottom: 1px solid #1e1e1e;
+  padding: 16px clamp(1.5rem, 5vw, 4rem);
   position: sticky;
-  top: 72px;
+  top: 88px;
   z-index: 90;
 }
 .controls-inner {
@@ -211,7 +303,7 @@ header {
 #search {
   width: 100%;
   background: var(--gris);
-  border: 1px solid #333;
+  border: 1px solid #2a2a2a;
   color: var(--blanco);
   padding: 10px 14px 10px 40px;
   border-radius: var(--radio);
@@ -224,7 +316,7 @@ header {
 #search:focus { border-color: var(--amarillo); }
 select {
   background: var(--gris);
-  border: 1px solid #333;
+  border: 1px solid #2a2a2a;
   color: var(--blanco);
   padding: 10px 14px;
   border-radius: var(--radio);
@@ -246,7 +338,7 @@ select:focus { border-color: var(--amarillo); }
 .catalog-section {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem clamp(1rem, 4vw, 3rem) 4rem;
+  padding: 2rem clamp(1.5rem, 5vw, 4rem) 4rem;
 }
 #grid {
   display: grid;
@@ -545,8 +637,8 @@ select:focus { border-color: var(--amarillo); }
 
 /* ── FOOTER ────────────────────────────────────── */
 footer {
-  border-top: 1px solid #1e1e1e;
-  padding: 2rem clamp(1rem, 4vw, 3rem);
+  border-top: 1px solid #1a1a1a;
+  padding: 2rem clamp(1.5rem, 5vw, 4rem);
   text-align: center;
   color: #444;
   font-size: 13px;
@@ -573,7 +665,7 @@ footer a:hover { text-decoration: underline; }
 ::-webkit-scrollbar-track { background: var(--negro); }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
 
-/* ── BOTÓN FLOTANTE WHATSAPP ───────────────────── */
+/* ── BOTÓN FLOTANTE WHATSAPP PREMIUM ──────────── */
 .wsp-float {
   position: fixed;
   bottom: 28px;
@@ -581,48 +673,65 @@ footer a:hover { text-decoration: underline; }
   z-index: 150;
   display: flex;
   align-items: center;
-  gap: 0;
-  background: #1a1a1a;
-  border: 1px solid #2e2e2e;
+  gap: 10px;
+  background: linear-gradient(135deg, #1a2e1a 0%, #0f1f0f 100%);
+  border: 1.5px solid rgba(37,211,102,0.35);
   border-radius: 50px;
-  padding: 12px;
+  padding: 14px 20px 14px 16px;
   text-decoration: none;
-  box-shadow: 0 4px 20px rgba(0,0,0,.5);
-  transition: padding .25s ease, gap .25s ease, border-color .25s ease, box-shadow .25s ease;
-  overflow: hidden;
-  max-width: 52px;
+  box-shadow:
+    0 4px 24px rgba(37,211,102,0.2),
+    0 2px 8px rgba(0,0,0,0.5),
+    0 0 0 0 rgba(37,211,102,0.15);
+  transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease, border-color 0.25s ease;
+  animation: floatPulse 3s ease-in-out infinite;
 }
+
+@keyframes floatPulse {
+  0%, 100% { box-shadow: 0 4px 24px rgba(37,211,102,0.2), 0 2px 8px rgba(0,0,0,0.5); }
+  50%       { box-shadow: 0 4px 32px rgba(37,211,102,0.32), 0 2px 12px rgba(0,0,0,0.5); }
+}
+
 .wsp-float:hover {
-  padding: 12px 18px 12px 14px;
-  gap: 8px;
-  border-color: #3a3a2a;
-  box-shadow: 0 6px 28px rgba(252,179,0,.15);
-  max-width: 180px;
+  transform: translateY(-3px) scale(1.04);
+  box-shadow:
+    0 8px 36px rgba(37,211,102,0.35),
+    0 4px 16px rgba(0,0,0,0.5),
+    0 0 0 4px rgba(37,211,102,0.08);
+  border-color: rgba(37,211,102,0.6);
+  animation: none;
 }
+
 .wsp-float-icon {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   flex-shrink: 0;
-  color: var(--amarillo);
-  transition: transform .2s;
+  color: var(--wsp-verde);
+  filter: drop-shadow(0 0 6px rgba(37,211,102,0.4));
 }
-.wsp-float:hover .wsp-float-icon {
-  transform: scale(1.08);
+
+.wsp-float-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
 }
+
 .wsp-float-label {
   font-size: 13px;
   font-weight: 500;
-  color: var(--texto-claro);
+  color: #e8f5e8;
   white-space: nowrap;
-  opacity: 0;
-  width: 0;
-  transition: opacity .2s ease .05s, width .25s ease;
-  overflow: hidden;
   font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.02em;
 }
-.wsp-float:hover .wsp-float-label {
-  opacity: 1;
-  width: auto;
+
+.wsp-float-sub {
+  font-size: 10px;
+  color: rgba(37,211,102,0.7);
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 </style>
 </head>
@@ -632,9 +741,7 @@ footer a:hover { text-decoration: underline; }
 <header>
   <a class="logo-wrap" href="#">
     <div class="logo-circle">
-      <svg viewBox="0 0 100 100" fill="#0a0a0a" xmlns="http://www.w3.org/2000/svg">
-        <path d="M58 9C47 7 36 13 31 23 26 32 28 43 35 49 28 53 23 60 22 68L19 83C18 88 22 91 27 91L73 91C78 91 82 88 81 83L78 68C77 60 72 53 65 49 72 43 74 32 69 23 64 13 69 11 58 9ZM45 51C38 49 33 43 35 36 37 28 45 22 54 23 63 24 69 31 68 39 67 45 61 51 54 51ZM37 63C39 57 46 53 54 53 62 53 69 57 71 63L72 79 28 79Z"/>
-      </svg>
+      <img src="logo.png" alt="Baker Street Logo">
     </div>
     <div class="logo-text">
       <span class="logo-name">Baker Street</span>
@@ -647,7 +754,12 @@ footer a:hover { text-decoration: underline; }
 <!-- ── HERO ── -->
 <section class="hero">
   <div>
-    <h1 class="hero-title">Libros<br><em>nuevos.</em><br>Precios<br><em>reales.</em></h1>
+    <h1 class="hero-title">
+      Libros<br>
+      <em>nuevos</em><br>
+      Precios<br>
+      <em>reales</em>
+    </h1>
   </div>
   <div class="hero-right">
     <p class="hero-desc">
@@ -668,8 +780,10 @@ footer a:hover { text-decoration: underline; }
         <span>En aproximadamente 10 días el libro llega a tu puerta en San Juan</span>
       </div>
     </div>
-    <a class="wsp-main" href="https://wa.me/5492644000000?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20sobre%20un%20libro" target="_blank">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/></svg>
+    <a class="wsp-main" href="https://wa.me/5492646609410?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20sobre%20un%20libro" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C9.61 21 3 14.39 3 6a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/>
+      </svg>
       Consultanos por WhatsApp
     </a>
   </div>
@@ -683,7 +797,6 @@ footer a:hover { text-decoration: underline; }
       <input type="text" id="search" placeholder="Buscar título o autor…" autocomplete="off">
     </div>
     <select id="filter-genre">
-      <!-- FIX 5: opción default cambiada a "Género" -->
       <option value="">Género</option>
     </select>
     <select id="filter-price">
@@ -716,16 +829,18 @@ footer a:hover { text-decoration: underline; }
   </div>
 </div>
 
-<!-- ── BOTÓN FLOTANTE WHATSAPP ── -->
+<!-- ── BOTÓN FLOTANTE WHATSAPP PREMIUM ── -->
 <a class="wsp-float"
-   href="https://wa.me/5492644000000?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20sobre%20un%20libro"
+   href="https://wa.me/5492646609410?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20sobre%20un%20libro"
    target="_blank"
    aria-label="Consultar por WhatsApp">
   <svg class="wsp-float-icon" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/>
+    <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C9.61 21 3 14.39 3 6a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/>
   </svg>
-  <span class="wsp-float-label">Consultar</span>
+  <div class="wsp-float-text">
+    <span class="wsp-float-label">Consultar</span>
+    <span class="wsp-float-sub">WhatsApp</span>
+  </div>
 </a>
 
 <!-- ── FOOTER ── -->
@@ -741,19 +856,15 @@ footer a:hover { text-decoration: underline; }
 // ─────────────────────────────────────────────────────────────────────────────
 const SHEET_ID   = '12eSHieApU3pcMDWwrhEw_KUAIynZwCX9puaol2bGHRo';
 const SHEET_NAME = 'Hoja 1';
-const WSP_NUMBER = '5492644000000'; // reemplazá con el número real
+const WSP_NUMBER = '5492646609410';
 
-// FIX 1: Columnas corregidas según la estructura real del Sheet interno:
-// A(0)=TITULO  B(1)=AUTOR  C(2)=Costo  D(3)=Precio cuspide
-// E(4)=Precio encargo  F(5)=disponibilidad  G(6)=Precio stock
-// H(7)=Género  I(8)=PORTADA (columna nueva a agregar en el Sheet)
 const COL = {
   titulo:      0,
   autor:       1,
-  precio:      4,   // Precio encargo — el que se muestra al público
+  precio:      4,
   disponible:  5,
-  genero:      7,   // Género — columna H
-  portadaUrl:  8,   // PORTADA — columna I (nueva)
+  genero:      7,
+  portadaUrl:  8,
 };
 
 const GBOOKS = 'https://www.googleapis.com/books/v1/volumes?q=';
@@ -778,12 +889,11 @@ async function loadSheet() {
         precio:     parseFloat((cell(r, COL.precio) || '0').replace(/[^0-9.]/g, '')),
         disponible: parseDisponible(cell(r, COL.disponible)),
         genero:     cell(r, COL.genero),
-        portadaUrl: cell(r, COL.portadaUrl),  // FIX 2: URL manual desde el Sheet
-        // Datos que se buscan en Google Books (solo texto, no imagen)
+        portadaUrl: cell(r, COL.portadaUrl),
         _desc:      null,
         _pages:     null,
         _publisher: null,
-        _fetched:   false, // para no repetir la búsqueda
+        _fetched:   false,
       }))
       .filter(b => b.titulo && b.disponible && b.precio > 0);
 
@@ -802,7 +912,7 @@ function cell(row, idx) {
 }
 
 function parseDisponible(val) {
-  if (!val) return true; // si no hay nada, asumimos disponible
+  if (!val) return true;
   const v = val.toLowerCase();
   return v !== 'false' && v !== 'no' && v !== '0';
 }
@@ -883,7 +993,6 @@ function renderGrid() {
   }).join('');
 }
 
-// FIX 2: coverHTML solo usa portadaUrl manual; si no hay, muestra placeholder
 function coverHTML(b) {
   if (b.portadaUrl) {
     return `<img src="${esc(b.portadaUrl)}" alt="${esc(b.titulo)}" loading="lazy"
@@ -903,19 +1012,18 @@ function placeholderHTML(titulo) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// FIX 3: Google Books — solo para reseña, páginas y editorial (sin imágenes)
+// GOOGLE BOOKS — solo para reseña, páginas y editorial
 // ─────────────────────────────────────────────────────────────────────────────
 async function fetchBookData(book) {
-  if (book._fetched) return; // ya se buscó, no repetir
+  if (book._fetched) return;
   book._fetched = true;
 
   try {
-    // Busca por título + primer palabra del autor para mayor precisión
     const authorQ  = book.autor.split(' ')[0];
     const query    = `intitle:${encodeURIComponent(book.titulo)}+inauthor:${encodeURIComponent(authorQ)}`;
     const res      = await fetch(`${GBOOKS}${query}&maxResults=1&fields=items(volumeInfo/description,volumeInfo/pageCount,volumeInfo/publisher)`);
 
-    if (!res.ok) return; // no rompe si falla la conexión
+    if (!res.ok) return;
 
     const data = await res.json();
     const info = data.items?.[0]?.volumeInfo;
@@ -926,7 +1034,7 @@ async function fetchBookData(book) {
       book._publisher = info.publisher    || null;
     }
   } catch(e) {
-    // Silencioso: si Google Books falla, el modal igual se abre sin esos datos
+    // Silencioso
   }
 }
 
@@ -942,14 +1050,12 @@ async function openModal(idx) {
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  // Portada: solo la manual; si no hay, placeholder
   coverCol.innerHTML = b.portadaUrl
     ? `<img src="${esc(b.portadaUrl)}" alt="${esc(b.titulo)}"
             style="width:200px;object-fit:cover;max-height:360px;"
             onerror="this.parentElement.innerHTML=placeholderHTML('${esc(b.titulo).replace(/'/g,"\\'")}');">`
     : placeholderHTML(b.titulo);
 
-  // Mostrar modal básico primero (sin esperar Google Books)
   const wspMsg = encodeURIComponent(`Hola Baker Street, quiero encargar: *${b.titulo}* de ${b.autor} — ${fmt(b.precio)}`);
 
   info.innerHTML = `
@@ -968,24 +1074,20 @@ async function openModal(idx) {
          href="https://wa.me/${WSP_NUMBER}?text=${wspMsg}"
          target="_blank">
         <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.112 1.524 5.837L.057 23.012a.75.75 0 00.931.931l5.175-1.467A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22A10 10 0 112.144 7.387l-.27-.479.867-3.06 3.06.867-.48-.27A10 10 0 0112 22z"/>
+          <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C9.61 21 3 14.39 3 6a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/>
         </svg>
         Encargar este libro
       </a>
     </div>
   `;
 
-  // Buscar datos en Google Books y actualizar la sección extra
   await fetchBookData(b);
 
   const extraSlot = document.getElementById('modal-extra');
-  if (!extraSlot) return; // el usuario cerró el modal mientras cargaba
+  if (!extraSlot) return;
 
-  // Construir sección extra con lo que se encontró
   let extraHTML = '';
 
-  // Metadatos (páginas y editorial) — solo si hay algo
   const metaItems = [
     b._publisher ? `<div class="meta-item"><span class="meta-label">Editorial</span><span class="meta-value">${esc(b._publisher)}</span></div>` : '',
     b._pages     ? `<div class="meta-item"><span class="meta-label">Páginas</span><span class="meta-value">${b._pages}</span></div>` : '',
@@ -995,13 +1097,11 @@ async function openModal(idx) {
     extraHTML += `<div class="modal-meta">${metaItems}</div>`;
   }
 
-  // Reseña
   if (b._desc) {
     const desc = b._desc.length > 500 ? b._desc.substring(0, 500) + '…' : b._desc;
     extraHTML += `<p class="modal-desc">${esc(desc)}</p>`;
   }
 
-  // Si no se encontró nada, no mostrar nada (sin el texto "Sin descripción")
   extraSlot.innerHTML = extraHTML || '';
 }
 

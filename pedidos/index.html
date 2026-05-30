@@ -26,7 +26,7 @@
   --wsp-verde: #25D366;
   --wsp-verde-dark: #1ebe5b;
 }
-
+ 
 /* ── RESET ─────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -38,7 +38,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
-
+ 
 /* ── HEADER PREMIUM ────────────────────────────── */
 header {
   background: rgba(10,10,10,0.92);
@@ -54,14 +54,14 @@ header {
   justify-content: space-between;
   height: 88px;
 }
-
+ 
 .logo-wrap {
   display: flex;
   align-items: center;
   gap: 18px;
   text-decoration: none;
 }
-
+ 
 .logo-circle {
   width: 56px;
   height: 56px;
@@ -86,14 +86,14 @@ header {
   object-fit: cover;
   display: block;
 }
-
+ 
 .logo-text {
   display: flex;
   flex-direction: column;
   line-height: 1;
   gap: 5px;
 }
-
+ 
 .logo-name {
   font-family: 'Playfair Display', serif;
   font-size: clamp(22px, 3.5vw, 36px);
@@ -102,7 +102,7 @@ header {
   letter-spacing: 0.03em;
   line-height: 1;
 }
-
+ 
 .logo-sub {
   font-size: 11px;
   color: var(--amarillo);
@@ -112,7 +112,7 @@ header {
   font-family: 'DM Sans', sans-serif;
   opacity: 0.85;
 }
-
+ 
 .header-badge {
   background: rgba(252,179,0,0.08);
   border: 1px solid rgba(252,179,0,0.18);
@@ -125,7 +125,7 @@ header {
   display: none;
 }
 @media(min-width:600px){ .header-badge { display: block; } }
-
+ 
 /* ── HERO CINEMATOGRÁFICO ──────────────────────── */
 .hero {
   position: relative;
@@ -136,15 +136,14 @@ header {
   grid-template-columns: 1fr;
   gap: 3.5rem;
   overflow: hidden;
-
+ 
   background:
     linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.82)),
     url('hero-bg.jpg') center/cover no-repeat;
-
+ 
   border-radius: 0 0 32px 32px;
 }
-
-/* Glow de fondo del hero */
+ 
 .hero::before {
   content: '';
   position: absolute;
@@ -156,9 +155,9 @@ header {
   pointer-events: none;
   z-index: 0;
 }
-
+ 
 .hero > * { position: relative; z-index: 1; }
-
+ 
 @media(min-width:768px){
   .hero {
     grid-template-columns: 1.15fr 1fr;
@@ -166,7 +165,7 @@ header {
     gap: 5rem;
   }
 }
-
+ 
 .hero-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(3.8rem, 9vw, 7.5rem);
@@ -175,18 +174,18 @@ header {
   color: var(--blanco);
   letter-spacing: -0.02em;
 }
-
+ 
 .hero-title em {
   font-style: italic;
   color: var(--amarillo);
 }
-
+ 
 .hero-right {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
-
+ 
 .hero-desc {
   font-size: clamp(15px, 1.8vw, 17px);
   color: var(--texto-claro);
@@ -194,7 +193,7 @@ header {
   max-width: 440px;
   font-weight: 300;
 }
-
+ 
 /* ── HOW IT WORKS PREMIUM ──────────────────────── */
 .how-it-works {
   display: flex;
@@ -210,7 +209,7 @@ header {
     0 0 0 0px rgba(252,179,0,0.05),
     inset 0 1px 0 rgba(255,255,255,0.03);
 }
-
+ 
 .how-title {
   font-size: 10px;
   letter-spacing: 0.3em;
@@ -220,7 +219,7 @@ header {
   font-weight: 500;
   font-family: 'DM Sans', sans-serif;
 }
-
+ 
 .step {
   display: flex;
   align-items: flex-start;
@@ -230,7 +229,7 @@ header {
   line-height: 1.6;
   font-weight: 300;
 }
-
+ 
 .step-num {
   min-width: 28px;
   height: 28px;
@@ -247,7 +246,7 @@ header {
   font-family: 'Playfair Display', serif;
   box-shadow: 0 2px 10px rgba(252,179,0,0.25);
 }
-
+ 
 /* ── BOTÓN PRINCIPAL WHATSAPP ──────────────────── */
 .wsp-main {
   display: inline-flex;
@@ -276,7 +275,7 @@ header {
   height: 24px;
   flex-shrink: 0;
 }
-
+ 
 /* ── BARRA CONTROLES ───────────────────────────── */
 .controls-bar {
   background: var(--negro-suave);
@@ -343,7 +342,7 @@ select:focus { border-color: var(--amarillo); }
   white-space: nowrap;
   margin-left: auto;
 }
-
+ 
 /* ── GRILLA ────────────────────────────────────── */
 .catalog-section {
   max-width: 1400px;
@@ -357,7 +356,7 @@ select:focus { border-color: var(--amarillo); }
 }
 @media(min-width:480px){ #grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
 @media(min-width:900px){ #grid { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); } }
-
+ 
 /* ── TARJETA ───────────────────────────────────── */
 .card {
   background: var(--gris);
@@ -466,7 +465,7 @@ select:focus { border-color: var(--amarillo); }
 }
 .card-btn:hover { background: var(--amarillo-dark); transform: scale(1.1); }
 .card-btn svg { width: 16px; height: 16px; color: var(--negro); }
-
+ 
 /* ── MODAL ─────────────────────────────────────── */
 #modal-overlay {
   position: fixed;
@@ -594,11 +593,6 @@ select:focus { border-color: var(--amarillo); }
 .modal-desc::-webkit-scrollbar { width: 4px; }
 .modal-desc::-webkit-scrollbar-track { background: transparent; }
 .modal-desc::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
-.modal-loading {
-  color: #555;
-  font-size: 13px;
-  font-style: italic;
-}
 .modal-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: auto; }
 .btn-wsp {
   flex: 1;
@@ -637,7 +631,7 @@ select:focus { border-color: var(--amarillo); }
   transition: border-color .2s, color .2s;
 }
 .btn-secondary:hover { border-color: var(--amarillo); color: var(--amarillo); }
-
+ 
 /* ── EMPTY STATE ───────────────────────────────── */
 #empty {
   display: none;
@@ -647,7 +641,7 @@ select:focus { border-color: var(--amarillo); }
 }
 #empty svg { width: 48px; height: 48px; color: #333; margin-bottom: 1rem; }
 #empty p { font-size: 15px; margin-top: 0.5rem; }
-
+ 
 /* ── FOOTER ────────────────────────────────────── */
 footer {
   border-top: 1px solid #1a1a1a;
@@ -659,7 +653,7 @@ footer {
 }
 footer a { color: var(--amarillo); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
-
+ 
 /* ── SKELETON ──────────────────────────────────── */
 .skeleton {
   background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
@@ -672,12 +666,12 @@ footer a:hover { text-decoration: underline; }
   100%{ background-position: -200% 0; }
 }
 .skel-card { height: 340px; border-radius: var(--radio); }
-
+ 
 /* ── SCROLLBAR ─────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--negro); }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-
+ 
 /* ── BOTÓN FLOTANTE WHATSAPP PREMIUM ──────────── */
 .wsp-float {
   position: fixed;
@@ -699,12 +693,12 @@ footer a:hover { text-decoration: underline; }
   transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease, border-color 0.25s ease;
   animation: floatPulse 3s ease-in-out infinite;
 }
-
+ 
 @keyframes floatPulse {
   0%, 100% { box-shadow: 0 4px 24px rgba(37,211,102,0.2), 0 2px 8px rgba(0,0,0,0.5); }
   50%       { box-shadow: 0 4px 32px rgba(37,211,102,0.32), 0 2px 12px rgba(0,0,0,0.5); }
 }
-
+ 
 .wsp-float:hover {
   transform: translateY(-3px) scale(1.04);
   box-shadow:
@@ -714,7 +708,7 @@ footer a:hover { text-decoration: underline; }
   border-color: rgba(37,211,102,0.6);
   animation: none;
 }
-
+ 
 .wsp-float-icon {
   width: 26px;
   height: 26px;
@@ -722,13 +716,13 @@ footer a:hover { text-decoration: underline; }
   color: var(--wsp-verde);
   filter: drop-shadow(0 0 6px rgba(37,211,102,0.4));
 }
-
+ 
 .wsp-float-text {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
 }
-
+ 
 .wsp-float-label {
   font-size: 13px;
   font-weight: 500;
@@ -737,7 +731,7 @@ footer a:hover { text-decoration: underline; }
   font-family: 'DM Sans', sans-serif;
   letter-spacing: 0.02em;
 }
-
+ 
 .wsp-float-sub {
   font-size: 10px;
   color: rgba(37,211,102,0.7);
@@ -749,7 +743,7 @@ footer a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
-
+ 
 <!-- ── HEADER ── -->
 <header>
   <a class="logo-wrap" href="#">
@@ -763,7 +757,7 @@ footer a:hover { text-decoration: underline; }
   </a>
   <span class="header-badge">Libros a Pedido</span>
 </header>
-
+ 
 <!-- ── HERO ── -->
 <section class="hero">
   <div>
@@ -774,47 +768,47 @@ footer a:hover { text-decoration: underline; }
       <em>reales</em>
     </h1>
   </div>
-
+ 
   <div class="hero-right">
-
+ 
     <p class="hero-desc">
       Más de 300 títulos disponibles para encargar. Elegís el libro, nosotros lo conseguimos en Buenos Aires y te llega a tu casa en San Juan.
     </p>
-
+ 
     <div class="how-it-works">
       <span class="how-title">Cómo funciona</span>
-
+ 
       <div class="step">
         <div class="step-num">1</div>
         <span>Elegís tu libro en el catálogo o nos consultás por cualquier título</span>
       </div>
-
+ 
       <div class="step">
         <div class="step-num">2</div>
         <span>Confirmamos disponibilidad y precio. Pagás el 100% por adelantado</span>
       </div>
-
+ 
       <div class="step">
         <div class="step-num">3</div>
         <span>En aproximadamente 10 días el libro llega a tu puerta en San Juan</span>
       </div>
     </div>
-
+ 
     <a class="wsp-main"
        href="https://wa.me/5492646609410?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20sobre%20un%20libro"
        target="_blank">
-
+ 
       <svg viewBox="0 0 32 32" fill="currentColor">
         <path d="M19.11 17.21c-.29-.15-1.69-.83-1.95-.92-.26-.1-.45-.15-.64.15-.19.29-.73.92-.9 1.11-.16.19-.33.22-.62.07-.29-.15-1.2-.44-2.29-1.41-.85-.76-1.42-1.69-1.58-1.98-.16-.29-.02-.45.12-.6.13-.13.29-.33.44-.49.15-.16.19-.29.29-.49.1-.19.05-.37-.02-.52-.07-.15-.64-1.54-.88-2.11-.23-.56-.47-.48-.64-.49h-.55c-.19 0-.49.07-.75.37-.26.29-.98.96-.98 2.35s1.01 2.73 1.15 2.92c.15.19 1.98 3.03 4.8 4.25.67.29 1.2.46 1.61.59.68.22 1.3.19 1.79.12.55-.08 1.69-.69 1.93-1.35.24-.66.24-1.22.17-1.35-.07-.12-.26-.19-.55-.34z"/>
         <path d="M16 3C8.82 3 3 8.82 3 16c0 2.53.66 5 1.91 7.18L3 29l5.99-1.87A12.94 12.94 0 0016 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm0 23.67c-2.01 0-3.98-.54-5.7-1.57l-.41-.24-3.56 1.11 1.16-3.38-.27-.43A10.66 10.66 0 015.33 16c0-5.88 4.79-10.67 10.67-10.67S26.67 10.12 26.67 16 21.88 26.67 16 26.67z"/>
       </svg>
-
+ 
       Consultanos por WhatsApp
     </a>
-
+ 
   </div>
 </section>
-  
+ 
 <!-- ── CONTROLES ── -->
 <div class="controls-bar">
   <div class="controls-inner">
@@ -835,7 +829,7 @@ footer a:hover { text-decoration: underline; }
     <span class="results-count" id="results-count"></span>
   </div>
 </div>
-
+ 
 <!-- ── CATÁLOGO ── -->
 <main class="catalog-section">
   <div id="grid"></div>
@@ -845,7 +839,7 @@ footer a:hover { text-decoration: underline; }
     <p>Probá con otro término o escribinos directamente.</p>
   </div>
 </main>
-
+ 
 <!-- ── MODAL ── -->
 <div id="modal-overlay" role="dialog" aria-modal="true">
   <div id="modal">
@@ -854,29 +848,29 @@ footer a:hover { text-decoration: underline; }
     <div class="modal-info" id="modal-info"></div>
   </div>
 </div>
-
+ 
 <!-- ── BOTÓN FLOTANTE WHATSAPP PREMIUM ── -->
 <a class="wsp-float"
    href="https://wa.me/5492646609410?text=Hola%20Baker%20Street%2C%20quiero%20consultar%20sobre%20un%20libro"
    target="_blank"
    aria-label="Consultar por WhatsApp">
-   <svg class="wsp-float-icon" viewBox="0 0 32 32" fill="currentColor">
-  <path d="M19.11 17.21c-.29-.15-1.69-.83-1.95-.92-.26-.1-.45-.15-.64.15-.19.29-.73.92-.9 1.11-.16.19-.33.22-.62.07-.29-.15-1.2-.44-2.29-1.41-.85-.76-1.42-1.69-1.58-1.98-.16-.29-.02-.45.12-.6.13-.13.29-.33.44-.49.15-.16.19-.29.29-.49.1-.19.05-.37-.02-.52-.07-.15-.64-1.54-.88-2.11-.23-.56-.47-.48-.64-.49h-.55c-.19 0-.49.07-.75.37-.26.29-.98.96-.98 2.35s1.01 2.73 1.15 2.92c.15.19 1.98 3.03 4.8 4.25.67.29 1.2.46 1.61.59.68.22 1.3.19 1.79.12.55-.08 1.69-.69 1.93-1.35.24-.66.24-1.22.17-1.35-.07-.12-.26-.19-.55-.34z"/>
-  <path d="M16 3C8.82 3 3 8.82 3 16c0 2.53.66 5 1.91 7.18L3 29l5.99-1.87A12.94 12.94 0 0016 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm0 23.67c-2.01 0-3.98-.54-5.7-1.57l-.41-.24-3.56 1.11 1.16-3.38-.27-.43A10.66 10.66 0 015.33 16c0-5.88 4.79-10.67 10.67-10.67S26.67 10.12 26.67 16 21.88 26.67 16 26.67z"/>
-</svg>
- <div class="wsp-float-text">
+  <svg class="wsp-float-icon" viewBox="0 0 32 32" fill="currentColor">
+    <path d="M19.11 17.21c-.29-.15-1.69-.83-1.95-.92-.26-.1-.45-.15-.64.15-.19.29-.73.92-.9 1.11-.16.19-.33.22-.62.07-.29-.15-1.2-.44-2.29-1.41-.85-.76-1.42-1.69-1.58-1.98-.16-.29-.02-.45.12-.6.13-.13.29-.33.44-.49.15-.16.19-.29.29-.49.1-.19.05-.37-.02-.52-.07-.15-.64-1.54-.88-2.11-.23-.56-.47-.48-.64-.49h-.55c-.19 0-.49.07-.75.37-.26.29-.98.96-.98 2.35s1.01 2.73 1.15 2.92c.15.19 1.98 3.03 4.8 4.25.67.29 1.2.46 1.61.59.68.22 1.3.19 1.79.12.55-.08 1.69-.69 1.93-1.35.24-.66.24-1.22.17-1.35-.07-.12-.26-.19-.55-.34z"/>
+    <path d="M16 3C8.82 3 3 8.82 3 16c0 2.53.66 5 1.91 7.18L3 29l5.99-1.87A12.94 12.94 0 0016 29c7.18 0 13-5.82 13-13S23.18 3 16 3zm0 23.67c-2.01 0-3.98-.54-5.7-1.57l-.41-.24-3.56 1.11 1.16-3.38-.27-.43A10.66 10.66 0 015.33 16c0-5.88 4.79-10.67 10.67-10.67S26.67 10.12 26.67 16 21.88 26.67 16 26.67z"/>
+  </svg>
+  <div class="wsp-float-text">
     <span class="wsp-float-label">Consultar</span>
     <span class="wsp-float-sub">WhatsApp</span>
   </div>
 </a>
-
+ 
 <!-- ── FOOTER ── -->
 <footer>
   <strong style="color:#c8b98a">Baker Street</strong> · Librería independiente · San Juan, Argentina<br>
   <a href="https://instagram.com/bakerstreet.sj" target="_blank">@bakerstreet.sj</a> · Solo libros nuevos y originales<br>
   <span style="font-size:12px;color:#333;margin-top:4px;display:block">Los precios pueden tener variaciones. Ante cualquier diferencia te avisamos antes de confirmar el pedido.</span>
 </footer>
-
+ 
 <script>
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIGURACIÓN
@@ -884,7 +878,7 @@ footer a:hover { text-decoration: underline; }
 const SHEET_ID   = '12eSHieApU3pcMDWwrhEw_KUAIynZwCX9puaol2bGHRo';
 const SHEET_NAME = 'Hoja 1';
 const WSP_NUMBER = '5492646609410';
-
+ 
 const COL = {
   titulo:      0,
   autor:       1,
@@ -892,12 +886,15 @@ const COL = {
   disponible:  5,
   genero:      7,
   portadaUrl:  8,
+  editorial:   9,   // Columna J
+  paginas:     10,  // Columna K
+  dimensiones: 11,  // Columna L
+  resena:      12,  // Columna M
 };
-
-const GBOOKS = 'https://www.googleapis.com/books/v1/volumes?q=';
+ 
 let allBooks = [];
 let filtered = [];
-
+ 
 // ─────────────────────────────────────────────────────────────────────────────
 // CARGA DEL SHEET
 // ─────────────────────────────────────────────────────────────────────────────
@@ -908,22 +905,22 @@ async function loadSheet() {
     const text = await res.text();
     const json = JSON.parse(text.substring(47, text.length - 2));
     const rows = json.table.rows;
-
+ 
     allBooks = rows
       .map(r => ({
-        titulo:     cell(r, COL.titulo),
-        autor:      cell(r, COL.autor),
-        precio:     parseFloat((cell(r, COL.precio) || '0').replace(/[^0-9.]/g, '')),
-        disponible: parseDisponible(cell(r, COL.disponible)),
-        genero:     cell(r, COL.genero),
-        portadaUrl: cell(r, COL.portadaUrl),
-        _desc:      null,
-        _pages:     null,
-        _publisher: null,
-        _fetched:   false,
+        titulo:      cell(r, COL.titulo),
+        autor:       cell(r, COL.autor),
+        precio:      parseFloat((cell(r, COL.precio) || '0').replace(/[^0-9.]/g, '')),
+        disponible:  parseDisponible(cell(r, COL.disponible)),
+        genero:      cell(r, COL.genero),
+        portadaUrl:  cell(r, COL.portadaUrl),
+        editorial:   cell(r, COL.editorial),
+        paginas:     cell(r, COL.paginas),
+        dimensiones: cell(r, COL.dimensiones),
+        resena:      cell(r, COL.resena),
       }))
       .filter(b => b.titulo && b.disponible && b.precio > 0);
-
+ 
     populateGenreFilter();
     filtered = [...allBooks];
     renderGrid();
@@ -932,18 +929,18 @@ async function loadSheet() {
     renderFallback();
   }
 }
-
+ 
 function cell(row, idx) {
   try { return row.c[idx]?.v?.toString().trim() || ''; }
   catch { return ''; }
 }
-
+ 
 function parseDisponible(val) {
   if (!val) return true;
   const v = val.toLowerCase();
   return v !== 'false' && v !== 'no' && v !== '0';
 }
-
+ 
 // ─────────────────────────────────────────────────────────────────────────────
 // FILTROS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -957,12 +954,12 @@ function populateGenreFilter() {
     sel.appendChild(o);
   });
 }
-
+ 
 function applyFilters() {
-  const q    = document.getElementById('search').value.toLowerCase().trim();
+  const q     = document.getElementById('search').value.toLowerCase().trim();
   const genre = document.getElementById('filter-genre').value;
   const maxP  = parseFloat(document.getElementById('filter-price').value) || Infinity;
-
+ 
   filtered = allBooks.filter(b => {
     const matchQ = !q || b.titulo.toLowerCase().includes(q) || b.autor.toLowerCase().includes(q);
     const matchG = !genre || b.genero === genre;
@@ -971,12 +968,12 @@ function applyFilters() {
   });
   renderGrid();
 }
-
+ 
 ['search', 'filter-genre', 'filter-price'].forEach(id => {
   document.getElementById(id).addEventListener('input', applyFilters);
   document.getElementById(id).addEventListener('change', applyFilters);
 });
-
+ 
 // ─────────────────────────────────────────────────────────────────────────────
 // RENDER GRILLA
 // ─────────────────────────────────────────────────────────────────────────────
@@ -984,16 +981,16 @@ function renderGrid() {
   const grid  = document.getElementById('grid');
   const empty = document.getElementById('empty');
   const count = document.getElementById('results-count');
-
+ 
   count.textContent = `${filtered.length} título${filtered.length !== 1 ? 's' : ''}`;
-
+ 
   if (!filtered.length) {
     grid.innerHTML = '';
     empty.style.display = 'block';
     return;
   }
   empty.style.display = 'none';
-
+ 
   grid.innerHTML = filtered.map((b, i) => {
     const idx = allBooks.indexOf(b);
     return `
@@ -1019,7 +1016,7 @@ function renderGrid() {
       </div>`;
   }).join('');
 }
-
+ 
 function coverHTML(b) {
   if (b.portadaUrl) {
     return `<img src="${esc(b.portadaUrl)}" alt="${esc(b.titulo)}" loading="lazy"
@@ -1027,7 +1024,7 @@ function coverHTML(b) {
   }
   return placeholderHTML(b.titulo);
 }
-
+ 
 function placeholderHTML(titulo) {
   return `<div class="cover-placeholder">
     <svg class="cover-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
@@ -1037,54 +1034,37 @@ function placeholderHTML(titulo) {
     <span class="cover-placeholder-title">${esc(titulo)}</span>
   </div>`;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// GOOGLE BOOKS — solo para reseña, páginas y editorial
-// ─────────────────────────────────────────────────────────────────────────────
-async function fetchBookData(book) {
-  if (book._fetched) return;
-  book._fetched = true;
-
-  try {
-    const authorQ  = book.autor.split(' ')[0];
-    const query    = `intitle:${encodeURIComponent(book.titulo)}+inauthor:${encodeURIComponent(authorQ)}`;
-    const res      = await fetch(`${GBOOKS}${query}&maxResults=1&fields=items(volumeInfo/description,volumeInfo/pageCount,volumeInfo/publisher)`);
-
-    if (!res.ok) return;
-
-    const data = await res.json();
-    const info = data.items?.[0]?.volumeInfo;
-
-    if (info) {
-      book._desc      = info.description  || null;
-      book._pages     = info.pageCount    || null;
-      book._publisher = info.publisher    || null;
-    }
-  } catch(e) {
-    // Silencioso
-  }
-}
-
+ 
 // ─────────────────────────────────────────────────────────────────────────────
 // MODAL
 // ─────────────────────────────────────────────────────────────────────────────
-async function openModal(idx) {
-  const b       = allBooks[idx];
-  const overlay = document.getElementById('modal-overlay');
+function openModal(idx) {
+  const b        = allBooks[idx];
+  const overlay  = document.getElementById('modal-overlay');
   const coverCol = document.getElementById('modal-cover-col');
-  const info    = document.getElementById('modal-info');
-
+  const info     = document.getElementById('modal-info');
+ 
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
-
+ 
   coverCol.innerHTML = b.portadaUrl
     ? `<img src="${esc(b.portadaUrl)}" alt="${esc(b.titulo)}"
             style="width:200px;object-fit:cover;max-height:360px;"
             onerror="this.parentElement.innerHTML=placeholderHTML('${esc(b.titulo).replace(/'/g,"\\'")}');">`
     : placeholderHTML(b.titulo);
-
+ 
   const wspMsg = encodeURIComponent(`Hola Baker Street, quiero encargar: *${b.titulo}* de ${b.autor} — ${fmt(b.precio)}`);
-
+ 
+  // Armar los meta items con los datos del Sheet
+  const metaItems = [
+    b.editorial   ? `<div class="meta-item"><span class="meta-label">Editorial</span><span class="meta-value">${esc(b.editorial)}</span></div>` : '',
+    b.paginas     ? `<div class="meta-item"><span class="meta-label">Páginas</span><span class="meta-value">${esc(b.paginas)}</span></div>` : '',
+    b.dimensiones ? `<div class="meta-item"><span class="meta-label">Dimensiones</span><span class="meta-value">${esc(b.dimensiones)}</span></div>` : '',
+  ].filter(Boolean).join('');
+ 
+  const metaHTML = metaItems ? `<div class="modal-meta">${metaItems}</div>` : '';
+  const resenaHTML = b.resena ? `<p class="modal-desc">${esc(b.resena)}</p>` : '';
+ 
   info.innerHTML = `
     <span class="modal-genre-tag">${esc(b.genero)}</span>
     <div class="modal-title">${esc(b.titulo)}</div>
@@ -1093,9 +1073,8 @@ async function openModal(idx) {
       <span class="modal-price-label">Precio Baker Street</span>
       <span class="modal-price">${fmt(b.precio)}</span>
     </div>
-    <div id="modal-extra">
-      <p class="modal-loading">Buscando información del libro…</p>
-    </div>
+    ${metaHTML}
+    ${resenaHTML}
     <div class="modal-actions">
       <a class="btn-wsp"
          href="https://wa.me/${WSP_NUMBER}?text=${wspMsg}"
@@ -1107,36 +1086,13 @@ async function openModal(idx) {
       </a>
     </div>
   `;
-
-  await fetchBookData(b);
-
-  const extraSlot = document.getElementById('modal-extra');
-  if (!extraSlot) return;
-
-  let extraHTML = '';
-
-  const metaItems = [
-    b._publisher ? `<div class="meta-item"><span class="meta-label">Editorial</span><span class="meta-value">${esc(b._publisher)}</span></div>` : '',
-    b._pages     ? `<div class="meta-item"><span class="meta-label">Páginas</span><span class="meta-value">${b._pages}</span></div>` : '',
-  ].filter(Boolean).join('');
-
-  if (metaItems) {
-    extraHTML += `<div class="modal-meta">${metaItems}</div>`;
-  }
-
-  if (b._desc) {
-    const desc = b._desc.length > 500 ? b._desc.substring(0, 500) + '…' : b._desc;
-    extraHTML += `<p class="modal-desc">${esc(desc)}</p>`;
-  }
-
-  extraSlot.innerHTML = extraHTML || '';
 }
-
+ 
 function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-
+ 
 document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('modal-overlay').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeModal();
@@ -1144,7 +1100,7 @@ document.getElementById('modal-overlay').addEventListener('click', e => {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
 });
-
+ 
 // ─────────────────────────────────────────────────────────────────────────────
 // FALLBACK
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1158,7 +1114,7 @@ function renderFallback() {
       </a>
     </div>`;
 }
-
+ 
 // ─────────────────────────────────────────────────────────────────────────────
 // UTILS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1168,7 +1124,7 @@ function fmt(n) {
 function esc(s) {
   return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
+ 
 // ─────────────────────────────────────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────────────────────────────────────

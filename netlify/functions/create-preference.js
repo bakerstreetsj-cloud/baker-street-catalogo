@@ -1,9 +1,6 @@
-Error clásico de CORS. La función necesita responder correctamente al "preflight" OPTIONS que el navegador manda antes del POST. El archivo actual no lo maneja.
-Reemplazá el contenido completo de create-preference.js en GitHub por este:
-javascriptconst https = require('https');
+const https = require('https');
 
 exports.handler = async (event) => {
-  // Manejar preflight CORS
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,

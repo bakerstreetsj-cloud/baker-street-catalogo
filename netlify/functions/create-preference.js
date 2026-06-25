@@ -1,6 +1,21 @@
-const https = require('https');
+Error clásico de CORS. La función necesita responder correctamente al "preflight" OPTIONS que el navegador manda antes del POST. El archivo actual no lo maneja.
+Reemplazá el contenido completo de create-preference.js en GitHub por este:
+javascriptconst https = require('https');
 
 exports.handler = async (event) => {
+  // Manejar preflight CORS
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+      },
+      body: ''
+    };
+  }
+
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
@@ -51,16 +66,27 @@ exports.handler = async (event) => {
           const parsed = JSON.parse(response);
           resolve({
             statusCode: 200,
-            headers: { 'Access-Control-Allow-Origin': '*' },
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Headers': 'Content-Type'
+            },
             body: JSON.stringify({ init_point: parsed.init_point, id: parsed.id })
           });
         } catch {
-          resolve({ statusCode: 500, body: 'Error parsing MP response' });
+          resolve({
+            statusCode: 500,
+            headers: { 'Access-Control-Allow-Origin': '*' },
+            body: 'Error parsing MP response'
+          });
         }
       });
     });
 
-    req.on('error', (e) => resolve({ statusCode: 500, body: e.message }));
+    req.on('error', (e) => resolve({
+      statusCode: 500,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: e.message
+    }));
     req.write(data);
     req.end();
   });

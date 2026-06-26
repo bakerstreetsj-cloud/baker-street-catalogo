@@ -17,7 +17,7 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  const ACCESS_TOKEN = 'APP_USR-8659553275287332-062210-b6acbb535dff81b52dd23384119b10f8-3491566792';
+  const ACCESS_TOKEN = 'APP_USR-4709784294641639-062210-16c181973bc8bd52ea911a2de9e15680-266444008';
 
   let body;
   try {
